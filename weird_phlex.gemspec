@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors = ['Klaus Weidinger']
   s.email = ['Klaus Weidinger']
   s.homepage = 'https://github.com/weird-phlex/weird_phlex'
-  s.summary = 'Example description'
-  s.description = 'Example description'
+  s.summary = 'A package manager for "soft dependencies", mainly aimed at UI components'
+  s.description = 'A package manager for "soft dependencies", mainly aimed at UI components'
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/weird-phlex/weird_phlex/issues',
@@ -17,14 +17,14 @@ Gem::Specification.new do |s|
     'documentation_uri' => 'https://github.com/weird-phlex/weird_phlex',
     'homepage_uri' => 'https://github.com/weird-phlex/weird_phlex',
     'source_code_uri' => 'https://github.com/weird-phlex/weird_phlex',
-'rubygems_mfa_required' => 'true',
+    'rubygems_mfa_required' => 'true',
   }
 
   s.license = 'MIT'
 
   s.files = Dir.glob('lib/**/*') + Dir.glob('bin/**/*') + %w[README.md LICENSE.txt CHANGELOG.md]
   s.require_paths = ['lib']
-  s.required_ruby_version = '>= 2.7'
+  s.required_ruby_version = '>= 3.1'
 
   s.add_development_dependency 'bundler', '>= 2.3.1'
   s.add_development_dependency 'rake', '>= 13.0'
