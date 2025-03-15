@@ -24,7 +24,13 @@ Gem::Specification.new do |s|
 
   s.files = Dir.glob('lib/**/*') + Dir.glob('bin/**/*') + %w[README.md LICENSE.txt CHANGELOG.md]
   s.require_paths = ['lib']
+  s.bindir = 'bin'
+  s.executables = ['weird_phlex', 'wph']
+
   s.required_ruby_version = '>= 3.1'
+
+  s.add_dependency 'thor', '~> 1.3'
+  s.add_dependency 'activesupport'
 
   s.add_development_dependency 'bundler', '>= 2.3.1'
   s.add_development_dependency 'rake', '>= 13.0'
