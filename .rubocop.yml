@@ -1,25 +1,3 @@
-# inherit_from:
-#   - .rubocop/rspec.yml
-
-# AllCops:
-#   Exclude:
-#     - 'bin/*'
-#     - 'tmp/**/*'
-#     - 'Gemfile'
-#     - 'vendor/**/*'
-#     - 'gemfiles/**/*'
-#     - 'lib/.rbnext/**/*'
-#     - 'lib/generators/**/templates/*.rb'
-#     - '.github/**/*'
-#   DisplayCopNames: true
-#   SuggestExtensions: false
-#   NewCops: disable
-#   TargetRubyVersion: 2.7
-
-# Style/FrozenStringLiteralComment:
-#   Enabled: true
-
-
 inherit_gem:
   makandra-rubocop:
     - config/default.yml
