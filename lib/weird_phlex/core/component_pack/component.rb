@@ -12,7 +12,7 @@ module WeirdPhlex
         end
 
         def to_s
-          "#{@name} - #{@files.count} file#{"s" if @files.count != 1}"
+          "#{@name} - #{@files.count} file#{'s' if @files.count != 1}"
         end
       end
     end

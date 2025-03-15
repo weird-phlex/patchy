@@ -11,7 +11,7 @@ module WeirdPhlex
           new(
             component: file.component,
             part: file.part,
-            file: file.file
+            file: file.file,
           )
         end
 
@@ -33,14 +33,14 @@ module WeirdPhlex
 
         def part_location
           case @part
-          when "helper"
-            "app/helpers/components"
-          when "partial"
-            "app/views/components"
-          when "stimulus_controller"
-            "app/javascript/controllers/components"
+          when 'helper'
+            'app/helpers/components'
+          when 'partial'
+            'app/views/components'
+          when 'stimulus_controller'
+            'app/javascript/controllers/components'
           else
-            raise "Unknown part"
+            raise 'Unknown part'
           end
         end
 

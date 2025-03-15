@@ -1,21 +1,40 @@
-inherit_from:
-  - .rubocop/rspec.yml
+# inherit_from:
+#   - .rubocop/rspec.yml
+
+# AllCops:
+#   Exclude:
+#     - 'bin/*'
+#     - 'tmp/**/*'
+#     - 'Gemfile'
+#     - 'vendor/**/*'
+#     - 'gemfiles/**/*'
+#     - 'lib/.rbnext/**/*'
+#     - 'lib/generators/**/templates/*.rb'
+#     - '.github/**/*'
+#   DisplayCopNames: true
+#   SuggestExtensions: false
+#   NewCops: disable
+#   TargetRubyVersion: 2.7
+
+# Style/FrozenStringLiteralComment:
+#   Enabled: true
+
+
+inherit_gem:
+  makandra-rubocop:
+    - config/default.yml
+    - config/ext/rails.yml
+    - config/ext/rspec.yml
+    - config/ext/rspec_rails.yml
+    - config/ext/capybara.yml
+    - config/ext/factory_bot.yml
+
+inherit_mode:
+  merge:
+    - Exclude
 
 AllCops:
-  Exclude:
-    - 'bin/*'
-    - 'tmp/**/*'
-    - 'Gemfile'
-    - 'vendor/**/*'
-    - 'gemfiles/**/*'
-    - 'lib/.rbnext/**/*'
-    - 'lib/generators/**/templates/*.rb'
-    - '.github/**/*'
-  DisplayCopNames: true
   SuggestExtensions: false
-  NewCops: disable
-  TargetRubyVersion: 2.7
 
-Style/FrozenStringLiteralComment:
-  Enabled: true
-
+Gemspec/DevelopmentDependencies:
+  Enabled: false

@@ -4,7 +4,7 @@ module WeirdPhlex
   module Core
     module Project
       class File
-        LIBRARAY_AND_VARIANT_REGEX = %r{\A(?<library>[^/]+)/(?<variant>[^/]+)/(?<component_pack_path>.*)\Z}
+        LIBRARAY_AND_VARIANT_REGEX = %r{\A(?<library>[^/]+)/(?<variant>[^/]+)/(?<component_pack_path>.*)\Z}.freeze
 
         attr_reader :file, :component, :raw_file
 
@@ -38,8 +38,8 @@ module WeirdPhlex
             return
           end
 
-          @version = @data["version"]
-          @relative_path = @data["path"]
+          @version = @data['version']
+          @relative_path = @data['path']
 
           if (matches = @relative_path.match(LIBRARAY_AND_VARIANT_REGEX))
             @library = matches[:library]
@@ -50,9 +50,9 @@ module WeirdPhlex
             return
           end
 
-          split = @component_pack_path.split("/")
+          split = @component_pack_path.split('/')
 
-          if split.first == "shared"
+          if split.first == 'shared'
             @shared_file = true
             @component = nil
             @part = nil
@@ -85,7 +85,7 @@ module WeirdPhlex
               "FILE: #{@component} - #{@part} - #{@file}"
             end
           else
-            "IGNORED"
+            'IGNORED'
           end
         end
 
@@ -94,29 +94,29 @@ module WeirdPhlex
         def read_beginning
           bytes = raw_file.read(2_000)
           if bytes
-            bytes.force_encoding("UTF-8").encode("UTF-8", undef: :replace, invalid: :replace, replace: "?")
+            bytes.force_encoding('UTF-8').encode('UTF-8', undef: :replace, invalid: :replace, replace: '?')
           else
-            ""
+            ''
           end
         end
 
         def extension
-          raw_file.basename.to_s.delete_prefix(".").match(/(\..*)$/)
-          Regexp.last_match(1) || ""
+          raw_file.basename.to_s.delete_prefix('.').match(/(\..*)$/)
+          Regexp.last_match(1) || ''
         end
 
         def magic_comments
-          read_beginning.lines.take_while { _1.start_with?(/(#|\/\/|<%#|\/\*|<!--|-#)/) }
+          read_beginning.lines.take_while { _1.start_with?(%r{(#|//|<%#|/\*|<!--|-#)}) }
         end
 
         def weird_phlex_hash
-          if magic_comments.any? { _1.match(/weird_phlex: ({.*})/) }
-            begin
-              JSON.parse(Regexp.last_match(1))
-            rescue JSON::ParserError
-              @broken_data = Regexp.last_match(1)
-              nil
-            end
+          return unless magic_comments.any? { _1.match(/weird_phlex: ({.*})/) }
+
+          begin
+            JSON.parse(Regexp.last_match(1))
+          rescue JSON::ParserError
+            @broken_data = Regexp.last_match(1)
+            nil
           end
         end
 
@@ -125,7 +125,7 @@ module WeirdPhlex
 
           # probably needs to be configurable, maybe with presets for Rails, Hanami, Middleman, e.g.
           def directories
-            ["app", "config", "lib", "public", "test", "vendor"]
+            %w[app config lib public test vendor]
           end
 
           # A bit naive
@@ -134,7 +134,7 @@ module WeirdPhlex
           end
 
           def files_in(root)
-            Dir["**/*", base: root.to_s].map { root.join(_1) }.select(&:file?)
+            Dir['**/*', base: root.to_s].map { root.join(_1) }.select(&:file?)
           end
         end
       end
