@@ -1,4 +1,4 @@
-name: rspec
+name: RSpec
 
 on:
   push:
@@ -18,11 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["3.2"]
-        gemfile: ["gemfiles/rails7.gemfile"]
         include:
-        - ruby: "3.3"
+        - ruby: "3.4"
           gemfile: "gemfiles/railsmain.gemfile"
+        - ruby: "3.3"
+          gemfile: "gemfiles/rails72.gemfile"
         - ruby: "3.2"
           gemfile: "gemfiles/rails71.gemfile"
         - ruby: "3.1"
