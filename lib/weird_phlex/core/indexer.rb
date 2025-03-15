@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "weird_phlex/core/component_pack/variant"
-require "weird_phlex/core/project/file"
-require "weird_phlex/core/project/component"
+require 'weird_phlex/core/component_pack/variant'
+require 'weird_phlex/core/project/file'
+require 'weird_phlex/core/project/component'
 
 module WeirdPhlex
   module Core

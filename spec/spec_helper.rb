@@ -1,34 +1,23 @@
 # frozen_string_literal: true
 
 begin
-  require "debug" unless ENV["CI"]
+  require 'debug' unless ENV['CI']
 rescue LoadError
-end
-ENV["RAILS_ENV"] = "test"
-
-require "combustion"
-require "weird_phlex"
-
-begin
-  # See https://github.com/pat/combustion
-  Combustion.initialize! do
-    config.logger = Logger.new(nil)
-    config.log_level = :fatal
-  end
-rescue => e
-  # Fail fast if application couldn't be loaded
-  $stdout.puts "Failed to load the app: #{e.message}\n#{e.backtrace.take(5).join("\n")}"
-  exit(1)
+  # no-op
 end
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
+ENV['RAILS_ENV'] = 'test'
+
+require 'weird_phlex'
+
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
 
-  config.example_status_persistence_file_path = "tmp/rspec_examples.txt"
+  config.example_status_persistence_file_path = 'tmp/rspec_examples.txt'
   config.filter_run :focus
   config.run_all_when_everything_filtered = true
 

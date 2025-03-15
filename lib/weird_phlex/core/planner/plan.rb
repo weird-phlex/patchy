@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "weird_phlex/core/project/target_file"
-require "weird_phlex/core/planner/plan/copy_action"
+require 'weird_phlex/core/project/target_file'
+require 'weird_phlex/core/planner/plan/copy_action'
 
 module WeirdPhlex
   module Core
@@ -9,7 +9,7 @@ module WeirdPhlex
       class Plan
         attr_reader :actions
 
-        def initialize(actions = [])
+        def initialize(_actions = [])
           @actions = []
         end
 
@@ -29,8 +29,8 @@ module WeirdPhlex
           add(
             CopyAction.new(
               source_file,
-              WeirdPhlex::Core::Project::TargetFile.from_component_pack_file(source_file)
-            )
+              WeirdPhlex::Core::Project::TargetFile.from_component_pack_file(source_file),
+            ),
           )
         end
 

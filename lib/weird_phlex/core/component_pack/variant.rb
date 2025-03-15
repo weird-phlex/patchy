@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require "open3"
+require 'open3'
 
-require "weird_phlex/core/component_pack/component"
-require "weird_phlex/core/component_pack/file"
+require 'weird_phlex/core/component_pack/component'
+require 'weird_phlex/core/component_pack/file'
 
 module WeirdPhlex
   module Core
     module ComponentPack
       class Variant
-        LIBRARAY_AND_VARIANT_REGEX = %r{\Aweird_phlex-(?<library>[_\w]+)-(?<variant>[_\w]+)\Z}
+        LIBRARAY_AND_VARIANT_REGEX = /\Aweird_phlex-(?<library>[_\w]+)-(?<variant>[_\w]+)\Z/
 
         def self.all
           # We assume that both `weird_phlex` and all component packs are loaded in Bundler group `:development`
           # and are thus available at the same time.
           Gem.loaded_specs
-            .select { |name, gem_specification| name.match(LIBRARAY_AND_VARIANT_REGEX) }
+            .select { |name, _gem_specification| name.match(LIBRARAY_AND_VARIANT_REGEX) }
             .values
             .map { new(_1) }
         end
@@ -25,7 +25,7 @@ module WeirdPhlex
           @gem = gem_specification.name
           @gem_path = Pathname.new(gem_specification.gem_dir)
           @library, @variant = library_and_variant(gem_specification.name)
-          @component_path = @gem_path.join("lib", "weird_phlex", @library, @variant)
+          @component_path = @gem_path.join('lib', 'weird_phlex', @library, @variant)
         end
 
         def components
@@ -45,7 +45,7 @@ module WeirdPhlex
 
         # Potentially use Gem::Specification.lib_files
         def file_paths
-          Dir["**/*", base: @component_path.to_s].map { @component_path.join(_1) }.select(&:file?)
+          Dir['**/*', base: @component_path.to_s].map { @component_path.join(_1) }.select(&:file?)
         end
 
         def library_and_variant(name)
