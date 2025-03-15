@@ -4,22 +4,10 @@ begin
   require "debug" unless ENV["CI"]
 rescue LoadError
 end
+
 ENV["RAILS_ENV"] = "test"
 
-require "combustion"
 require "weird_phlex"
-
-begin
-  # See https://github.com/pat/combustion
-  Combustion.initialize! do
-    config.logger = Logger.new(nil)
-    config.log_level = :fatal
-  end
-rescue => e
-  # Fail fast if application couldn't be loaded
-  $stdout.puts "Failed to load the app: #{e.message}\n#{e.backtrace.take(5).join("\n")}"
-  exit(1)
-end
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
