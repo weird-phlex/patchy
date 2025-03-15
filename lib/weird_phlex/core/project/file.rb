@@ -4,7 +4,7 @@ module WeirdPhlex
   module Core
     module Project
       class File
-        LIBRARAY_AND_VARIANT_REGEX = %r{\A(?<library>[^/]+)/(?<variant>[^/]+)/(?<component_pack_path>.*)\Z}.freeze
+        LIBRARAY_AND_VARIANT_REGEX = %r{\A(?<library>[^/]+)/(?<variant>[^/]+)/(?<component_pack_path>.*)\Z}
 
         attr_reader :file, :component, :raw_file
 

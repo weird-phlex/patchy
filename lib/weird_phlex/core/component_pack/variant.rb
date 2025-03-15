@@ -9,7 +9,7 @@ module WeirdPhlex
   module Core
     module ComponentPack
       class Variant
-        LIBRARAY_AND_VARIANT_REGEX = /\Aweird_phlex-(?<library>[_\w]+)-(?<variant>[_\w]+)\Z/.freeze
+        LIBRARAY_AND_VARIANT_REGEX = /\Aweird_phlex-(?<library>[_\w]+)-(?<variant>[_\w]+)\Z/
 
         def self.all
           # We assume that both `weird_phlex` and all component packs are loaded in Bundler group `:development`
