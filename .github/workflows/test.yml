@@ -11,11 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: gemfiles/rubocop.gemfile
+      CI: true
     steps:
     - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.3
+        ruby-version: "3.3"
         bundler-cache: true
     - name: rubocop
       run: |
