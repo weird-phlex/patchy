@@ -41,8 +41,6 @@ jobs:
           gemfile: "gemfiles/rails71.gemfile"
         - ruby: "3.1"
           gemfile: "gemfiles/rails70.gemfile"
-        - ruby: "2.7"
-          gemfile: "gemfiles/rails6.gemfile"
 
     steps:
     - uses: actions/checkout@v4
