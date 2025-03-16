@@ -3,6 +3,7 @@
 require 'weird_phlex/component_pack/variant'
 require 'weird_phlex/project/file'
 require 'weird_phlex/project/component'
+require 'weird_phlex/project/config'
 
 module WeirdPhlex
   class Indexer

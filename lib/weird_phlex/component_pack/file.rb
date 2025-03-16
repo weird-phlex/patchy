@@ -12,17 +12,17 @@ module WeirdPhlex
         @relative_path = @path.to_s.delete_prefix("#{@component_path}/")
         split = @relative_path.split('/')
 
-        if split.first == 'version.rb'
+        if ['version.rb', 'Rakefile'].include?(split.first)
           @ignored = true
           @shared_file = false
           @component = nil
           @part = nil
-          @file = nil
-        elsif split.first == 'shared'
+          @file = split.first
+        elsif (matches = @relative_path.match(%r{\Ashared/(?<part>[^/]*)/(?<file>.*)}))
           @shared_file = true
           @component = nil
-          @part = nil
-          @file = nil
+          @part = matches[:part]
+          @file = matches[:file]
         elsif (matches = @relative_path.match(%r{\A(?<component>.*_component)/(?<part>[^/]*)/(?<file>.*)}))
           @shared_file = false
           @component = matches[:component]
@@ -47,7 +47,7 @@ module WeirdPhlex
 
       def to_s
         if @ignored
-          'IGNORED'
+          "IGNORED: #{@file}"
         elsif @shared_file
           "SHARED FILE: #{@relative_path}"
         else

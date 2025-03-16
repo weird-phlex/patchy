@@ -11,7 +11,7 @@ module WeirdPhlex
       WeirdPhlex::Indexer
         .component_pack_variants
         .flat_map(&:files)
-        .select(&:component_file?)
+        .reject(&:ignored?)
         .each { plan.create(_1) }
 
       plan

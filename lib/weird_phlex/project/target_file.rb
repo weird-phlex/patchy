@@ -14,13 +14,23 @@ module WeirdPhlex
         )
       end
 
+      def self.from_component_pack_shared_file(file)
+        new(
+          component: nil,
+          part: file.part,
+          file: file.file,
+          shared: true,
+        )
+      end
+
       # library:, variant:,
-      def initialize(component:, part:, file:)
+      def initialize(component:, part:, file:, shared: false)
         # @library = library
         # @variant = variant
         @component = component
         @part = part
         @file = file
+        @shared = shared
       end
 
       def raw_file
@@ -31,16 +41,14 @@ module WeirdPhlex
       end
 
       def part_location
-        case @part
-        when 'helper'
-          'app/helpers/components'
-        when 'partial'
-          'app/views/components'
-        when 'stimulus_controller'
-          'app/javascript/controllers/components'
+        path = if @shared
+          Config.new.shared_part_path(@part)
         else
-          raise 'Unknown part'
+          Config.new.part_path(@part)
         end
+        raise 'Unknown part' if path.blank?
+
+        path
       end
 
       # A bit naive, copied from File

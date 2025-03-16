@@ -25,12 +25,21 @@ module WeirdPhlex
       end
 
       def create(source_file)
-        add(
-          CopyAction.new(
-            source_file,
-            WeirdPhlex::Project::TargetFile.from_component_pack_file(source_file),
-          ),
-        )
+        if source_file.shared?
+          add(
+            CopyAction.new(
+              source_file,
+              WeirdPhlex::Project::TargetFile.from_component_pack_shared_file(source_file),
+            ),
+          )
+        else
+          add(
+            CopyAction.new(
+              source_file,
+              WeirdPhlex::Project::TargetFile.from_component_pack_file(source_file),
+            ),
+          )
+        end
       end
 
       def add(action)
