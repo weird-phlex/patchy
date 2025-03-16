@@ -1,0 +1,3 @@
+require 'weird_phlex'
+
+WeirdPhlex::CLI.start(ARGV)
