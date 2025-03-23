@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module WeirdPhlex
-  module ComponentPack
+  class ComponentPack
     class File
       attr_reader :component, :part, :file, :raw_file
 

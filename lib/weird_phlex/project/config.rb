@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
-require 'yaml'
-require 'json_schemer'
-
 module WeirdPhlex
-  module Project
+  class Project
     class Config < ::WeirdPhlex::Config
 
       def part_path(part_name)
-        config.dig('part_paths', part_name.to_s)
+        part_config('main').dig('components', part_name.to_s)
       end
 
       def shared_part_path(shared_part_name)
-        config.dig('shared_paths', shared_part_name.to_s)
+        part_config('main').dig('shared', shared_part_name.to_s)
       end
 
       private
+
+      def part_config(namespace)
+        config.dig('namespaces', namespace, 'parts')
+      end
 
       def config_path
         project_root.join('.weird_phlex.yml')
@@ -35,18 +36,67 @@ module WeirdPhlex
           'type' => 'object',
           'additionalProperties' => false,
           'properties' => {
-            'part_paths' => {
-              'type' => 'object',
-              'additionalProperties' => {
+            'additional_packs' => {
+              'type' => 'array',
+              'items' => {
                 'type' => 'string',
               },
             },
-            'shared_paths' => {
+            'hooks' => {
               'type' => 'object',
-              'additionalProperties' => {
-                'type' => 'string',
+              'additionalProperties' => { # hook name
+                'type' => 'object',
               },
             },
+            'namespaces' => {
+              'type' => 'object',
+              'additionalProperties' => { # namespace name
+                'type' => 'object',
+                'additionalProperties' => false,
+                'properties' => {
+                  'subdirectory' => {
+                    'type' => 'string',
+                  },
+                  'packs' => pack_config_schema,
+                  'parts' => part_config_schema,
+                },
+              },
+            },
+          },
+        }
+      end
+
+      def part_config_schema
+        {
+          'type' => 'object',
+          'additionalProperties' => false,
+          'properties' => {
+            'components' => string_mapping_schema,
+            'shared' => string_mapping_schema,
+            'global' => string_mapping_schema,
+          },
+        }
+      end
+
+      def pack_config_schema
+        {
+          'type' => 'array',
+          'items' => {
+            'type' => 'object',
+            'additionalProperties' => false,
+            'properties' => {
+              'name' => 'string',
+              'component_aliases' => string_mapping_schema,
+            },
+          },
+        }
+      end
+
+      def string_mapping_schema
+        {
+          'type' => 'object',
+          'additionalProperties' => {
+            'type' => 'string',
           },
         }
       end

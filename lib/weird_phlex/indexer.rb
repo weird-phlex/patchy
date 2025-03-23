@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
-require 'weird_phlex/component_pack/variant'
-require 'weird_phlex/project/file'
-require 'weird_phlex/project/component'
-require 'weird_phlex/project/config'
+require 'weird_phlex/component_pack'
+require 'weird_phlex/project'
 
 module WeirdPhlex
   class Indexer
     class << self
       def component_pack_variants
-        WeirdPhlex::ComponentPack::Variant.all
+        WeirdPhlex::ComponentPack.new.all_variants
       end
 
       def project_files
-        WeirdPhlex::Project::File.all
+        WeirdPhlex::Project.new.all_files
       end
 
       def project_components
-        WeirdPhlex::Project::Component.all
+        WeirdPhlex::Project.new.all_components
       end
     end
   end

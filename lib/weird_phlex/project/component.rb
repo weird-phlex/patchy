@@ -3,7 +3,7 @@
 require 'weird_phlex/project/file'
 
 module WeirdPhlex
-  module Project
+  class Project
     class Component
       attr_reader :files
 
