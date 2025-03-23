@@ -39,15 +39,15 @@ module WeirdPhlex
               'type' => 'object',
               'additionalProperties' => {
                 'type' => 'string',
-              }
+              },
             },
             'shared_paths' => {
               'type' => 'object',
               'additionalProperties' => {
                 'type' => 'string',
-              }
-            }
-          }
+              },
+            },
+          },
         }
       end
     end
