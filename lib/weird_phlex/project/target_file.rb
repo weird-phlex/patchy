@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module WeirdPhlex
-  module Project
+  class Project
     class TargetFile
       # This class represents a not yet existing file in the target project.
       # We use this as a placeholder for the planner.

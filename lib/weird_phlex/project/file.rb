@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module WeirdPhlex
-  module Project
+  class Project
     class File
       LIBRARAY_AND_VARIANT_REGEX = %r{\A(?<library>[^/]+)/(?<variant>[^/]+)/(?<component_pack_path>.*)\Z}
 

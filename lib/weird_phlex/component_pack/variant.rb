@@ -2,11 +2,8 @@
 
 require 'open3'
 
-require 'weird_phlex/component_pack/component'
-require 'weird_phlex/component_pack/file'
-
 module WeirdPhlex
-  module ComponentPack
+  class ComponentPack
     class Variant
       LIBRARAY_AND_VARIANT_REGEX = /\Aweird_phlex_pack-(?<library>[_\w]+)-(?<variant>[_\w]+)\Z/
 
