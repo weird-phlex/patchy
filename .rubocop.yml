@@ -14,5 +14,12 @@ inherit_mode:
 AllCops:
   SuggestExtensions: false
 
+# Experimenting with a different gem project structure.
 Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# This is a CLI tool.
+# If we ever allow programmatic non-CLI usage of this gem,
+# we need to move all `exit(1)` calls to the CLI layer.
+Rails/Exit:
   Enabled: false

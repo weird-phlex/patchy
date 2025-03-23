@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'json_schemer'
 
 module WeirdPhlex
   module Project
-    class Config
-      attr_reader :config
-
-      def initialize
-        config_path = project_root.join('.weird_phlex.yml')
-        @config = YAML.safe_load_file(config_path, symbolize_names: true)
-      end
+    class Config < ::WeirdPhlex::Config
 
       def part_path(part_name)
         config.dig(:part_paths, part_name.to_sym)
@@ -20,9 +15,40 @@ module WeirdPhlex
         config.dig(:shared_paths, shared_part_name.to_sym)
       end
 
+      private
+
+      def config_path
+        project_root.join('.weird_phlex.yml')
+      end
+
       # A bit naive, copied from File
       def project_root
         Pathname.new(Dir.pwd)
+      end
+
+      def error_message_header
+        "Invalid configuration detected in project's `.weird_phlex.yml` file!"
+      end
+
+      def json_schema
+        {
+          'type' => 'object',
+          'additionalProperties' => false,
+          'properties' => {
+            'part_paths' => {
+              'type' => 'object',
+              'additionalProperties' => {
+                'type' => 'string',
+              },
+            },
+            'shared_paths' => {
+              'type' => 'object',
+              'additionalProperties' => {
+                'type' => 'string',
+              },
+            },
+          },
+        }
       end
     end
   end
