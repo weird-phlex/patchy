@@ -8,11 +8,11 @@ module WeirdPhlex
     class Config < ::WeirdPhlex::Config
 
       def part_path(part_name)
-        config.dig(:part_paths, part_name.to_sym)
+        config.dig('part_paths', part_name.to_s)
       end
 
       def shared_part_path(shared_part_name)
-        config.dig(:shared_paths, shared_part_name.to_sym)
+        config.dig('shared_paths', shared_part_name.to_s)
       end
 
       private
