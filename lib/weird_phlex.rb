@@ -5,6 +5,7 @@ require 'weird_phlex/railtie' if defined?(Rails::Railtie)
 
 require 'active_support/all'
 
+require 'weird_phlex/config'
 require 'weird_phlex/indexer'
 require 'weird_phlex/planner'
 require 'weird_phlex/main'

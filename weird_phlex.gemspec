@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'thor', '~> 1.3'
   s.add_dependency 'activesupport'
+  s.add_dependency 'json_schemer', '~> 2.4'
 
   s.add_development_dependency 'bundler', '>= 2.3.1'
   s.add_development_dependency 'rake', '>= 13.0'
