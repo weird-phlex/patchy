@@ -4,15 +4,17 @@ module WeirdPhlex
   class ComponentPack
     class Config < ::WeirdPhlex::Config
 
+      attr_reader :component_pack_root
+
+      def initialize(root_path)
+        @component_pack_root = root_path
+        super()
+      end
+
       private
 
       def config_path
         component_pack_root.join('.weird_phlex.yml')
-      end
-
-      # hardcoded
-      def component_pack_root
-        Pathname.new(Dir.pwd).parent.join('weird_phlex_pack-dev_component_pack-testing')
       end
 
       def error_message_header
