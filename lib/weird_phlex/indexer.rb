@@ -7,7 +7,7 @@ module WeirdPhlex
   class Indexer
     class << self
       def component_pack_variants
-        WeirdPhlex::ComponentPack.new.all_variants
+        WeirdPhlex::ComponentPack.all
       end
 
       def project_files
