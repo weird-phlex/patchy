@@ -23,7 +23,7 @@ module WeirdPhlex
           @component = nil
           @part = matches[:part]
           @file = matches[:file]
-        elsif (matches = @relative_path.match(%r{\A(?<component>.*_component)/(?<part>[^/]*)/(?<file>.*)}))
+        elsif (matches = @relative_path.match(%r{\Acomponents/(?<component>.*_component)/(?<part>[^/]*)/(?<file>.*)}))
           @shared_file = false
           @component = matches[:component]
           @part = matches[:part]

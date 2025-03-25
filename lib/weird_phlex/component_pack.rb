@@ -14,7 +14,7 @@ module WeirdPhlex
       @gem = gem_specification.name
       @name = gem_specification.name.delete_prefix('weird_phlex_pack-')
       @root_path = Pathname.new(gem_specification.gem_dir)
-      @component_path = @root_path.join('lib', *@gem.split('-'))
+      @component_path = @root_path.join('pack')
       @config = Config.new(@root_path)
     end
 
