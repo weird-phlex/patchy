@@ -9,10 +9,9 @@ module WeirdPhlex
       # we temporarily assume that the project is still empty
       WeirdPhlex::ComponentPack
         .all
-        .flat_map(&:new_components)
-        .flat_map(&:new_files)
-        .tap { p _1 }
-        .each { plan.create_2(_1) }
+        .flat_map(&:components)
+        .flat_map(&:files)
+        .each { plan.create(_1) }
 
       plan
     end

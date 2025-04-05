@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'weird_phlex/component_pack/new_component'
 require 'weird_phlex/component_pack/component'
 require 'weird_phlex/component_pack/config'
-require 'weird_phlex/component_pack/new_file'
 require 'weird_phlex/component_pack/file'
 
 module WeirdPhlex
@@ -37,33 +35,10 @@ module WeirdPhlex
     end
 
     def components
-      files
-        .select(&:component_file?)
-        .group_by(&:component)
-        .map do |component_name, files|
-          WeirdPhlex::ComponentPack::Component.new(component_name, files: files)
-        end
-    end
-
-    def files
-      file_paths.map { WeirdPhlex::ComponentPack::File.new(_1, component_path: @pack_path) }
-    end
-
-    def new_components
       Dir['**/', base: @pack_path.to_s]
         .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) }
-        .map { |relative_path| NewComponent.new_or_nil(relative_path, pack: self) }
+        .map { |relative_path| Component.new_or_nil(relative_path, pack: self) }
         .compact
-    end
-
-    private
-
-    def file_paths
-      Dir['**/*', base: @pack_path.to_s].map { @pack_path.join(_1) }.select(&:file?)
-    end
-
-    def dir_paths(name)
-      Dir['**/', base: @pack_path.join(name).to_s]
     end
   end
 end
