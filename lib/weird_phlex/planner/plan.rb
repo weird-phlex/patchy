@@ -46,7 +46,7 @@ module WeirdPhlex
         add(
           CopyAction.new(
             source_file,
-            WeirdPhlex::Project::TargetFile.from_new_file(source_file),
+            WeirdPhlex::Project::TargetFile.new(source_file),
           ),
         )
       end
