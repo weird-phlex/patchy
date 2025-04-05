@@ -4,12 +4,8 @@ module WeirdPhlex
   class Project
     class Config < ::WeirdPhlex::Config
 
-      def part_path(part_name)
-        part_config('main').dig('components', part_name.to_s)
-      end
-
-      def shared_part_path(shared_part_name)
-        part_config('main').dig('shared', shared_part_name.to_s)
+      def part_path(component_type, part_name)
+        part_config('main').dig(component_type.to_s, part_name.to_s)
       end
 
       private

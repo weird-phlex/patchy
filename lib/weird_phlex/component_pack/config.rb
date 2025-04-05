@@ -7,18 +7,18 @@ module WeirdPhlex
       attr_reader :component_pack_root
 
       def initialize(root_path)
-        @component_pack_root = root_path
+        @component_pack_root = root_path.join('pack')
         super()
       end
 
       private
 
       def config_path
-        component_pack_root.join('.weird_phlex.yml')
+        component_pack_root.join('.weird_phlex_pack.yml')
       end
 
       def error_message_header
-        "Invalid configuration detected in component pack's `.weird_phlex.yml` file!"
+        "Invalid configuration detected in component pack's `.weird_phlex_pack.yml` file!"
       end
 
       def json_schema

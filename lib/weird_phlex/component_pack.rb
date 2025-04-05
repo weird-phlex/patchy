@@ -8,13 +8,13 @@ module WeirdPhlex
   class ComponentPack
     IMPLICIT_PACK_REGEX = /\Aweird_phlex_pack-(?<pack_name>.+)\Z/
 
-    attr_reader :config, :root_path
+    attr_reader :config, :root_path, :pack_path
 
     def initialize(gem_specification)
       @gem = gem_specification.name
       @name = gem_specification.name.delete_prefix('weird_phlex_pack-')
       @root_path = Pathname.new(gem_specification.gem_dir)
-      @component_path = @root_path.join('lib', *@gem.split('-'))
+      @pack_path = @root_path.join('pack')
       @config = Config.new(@root_path)
     end
 
@@ -35,23 +35,10 @@ module WeirdPhlex
     end
 
     def components
-      files
-        .select(&:component_file?)
-        .group_by(&:component)
-        .map do |component_name, files|
-          WeirdPhlex::ComponentPack::Component.new(component_name, files: files)
-        end
-    end
-
-    def files
-      file_paths.map { WeirdPhlex::ComponentPack::File.new(_1, component_path: @component_path) }
-    end
-
-    private
-
-    # Potentially use Gem::Specification.lib_files
-    def file_paths
-      Dir['**/*', base: @component_path.to_s].map { @component_path.join(_1) }.select(&:file?)
+      Dir['**/', base: @pack_path.to_s]
+        .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) }
+        .map { |relative_path| Component.new_or_nil(relative_path, pack: self) }
+        .compact
     end
   end
 end
