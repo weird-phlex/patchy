@@ -14,7 +14,7 @@ module WeirdPhlex
       @gem = gem_specification.name
       @name = gem_specification.name.delete_prefix('weird_phlex_pack-')
       @root_path = Pathname.new(gem_specification.gem_dir)
-      @component_path = @root_path.join('pack')
+      @pack_path = @root_path.join('pack')
       @config = Config.new(@root_path)
     end
 
@@ -44,14 +44,13 @@ module WeirdPhlex
     end
 
     def files
-      file_paths.map { WeirdPhlex::ComponentPack::File.new(_1, component_path: @component_path) }
+      file_paths.map { WeirdPhlex::ComponentPack::File.new(_1, component_path: @pack_path) }
     end
 
     private
 
-    # Potentially use Gem::Specification.lib_files
     def file_paths
-      Dir['**/*', base: @component_path.to_s].map { @component_path.join(_1) }.select(&:file?)
+      Dir['**/*', base: @pack_path.to_s].map { @pack_path.join(_1) }.select(&:file?)
     end
   end
 end
