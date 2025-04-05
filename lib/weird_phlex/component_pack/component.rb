@@ -26,7 +26,7 @@ module WeirdPhlex
       end
 
       def inspect
-        "NEW COMPONENT: #{@canonical_name}"
+        "COMPONENT: #{@canonical_name}"
       end
 
       def files
