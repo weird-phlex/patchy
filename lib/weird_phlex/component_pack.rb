@@ -3,6 +3,7 @@
 require 'weird_phlex/component_pack/new_component'
 require 'weird_phlex/component_pack/component'
 require 'weird_phlex/component_pack/config'
+require 'weird_phlex/component_pack/new_file'
 require 'weird_phlex/component_pack/file'
 
 module WeirdPhlex
@@ -49,30 +50,10 @@ module WeirdPhlex
     end
 
     def new_components
-      global = []
-      shared = []
-      components = []
-
-      if @pack_path.join('_global_').directory?
-        global << NewComponent.new('global', type: :global, pack: self)
-      end
-
-      shared = dir_paths('shared')
-        .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) } # TODO: improve
-        .map do |relative_path|
-          parts = relative_path.delete_suffix('/').split('/')
-          last = parts.pop.delete_prefix('_').delete_suffix('_')
-          NewComponent.new(last, subdirectory: parts, type: :shared, pack: self)
-        end
-      components = dir_paths('components')
-        .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) } # TODO: improve
-        .map do |relative_path|
-          parts = relative_path.delete_suffix('/').split('/')
-          last = parts.pop.delete_prefix('_').delete_suffix('_')
-          NewComponent.new(last, subdirectory: parts, type: :components, pack: self)
-        end
-
-      [*global, *shared, *components]
+      Dir['**/', base: @pack_path.to_s]
+        .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) }
+        .map { |relative_path| NewComponent.new_or_nil(relative_path, pack: self) }
+        .compact
     end
 
     private

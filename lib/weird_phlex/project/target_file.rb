@@ -23,10 +23,15 @@ module WeirdPhlex
         )
       end
 
-      # library:, variant:,
+      def self.from_new_file(file)
+        new(
+          component: file.component,
+          part: file.part,
+          file: file,
+        )
+      end
+
       def initialize(component:, part:, file:, shared: false)
-        # @library = library
-        # @variant = variant
         @component = component
         @part = part
         @file = file
@@ -34,18 +39,15 @@ module WeirdPhlex
       end
 
       def raw_file
-        path = project_root.join(part_location, @file)
+        path = project_root.join(part_location, *@file.component.subdirectory, @file.relative_path_without_part)
         ::FileUtils.mkdir_p(path.parent)
         ::FileUtils.touch(path)
         path
       end
 
       def part_location
-        path = if @shared
-          Config.new.shared_part_path(@part)
-        else
-          Config.new.part_path(@part)
-        end
+        puts "#{@file.component.type} - #{@file.part}"
+        path = Config.new.part_path(@file.component.type, @file.part)
         raise 'Unknown part' if path.blank?
 
         path

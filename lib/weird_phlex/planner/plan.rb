@@ -42,6 +42,15 @@ module WeirdPhlex
         end
       end
 
+      def create_2(source_file)
+        add(
+          CopyAction.new(
+            source_file,
+            WeirdPhlex::Project::TargetFile.from_new_file(source_file),
+          ),
+        )
+      end
+
       def add(action)
         @actions << action
       end

@@ -3,14 +3,14 @@
 module WeirdPhlex
   class ComponentPack
     class NewComponent
-      attr_reader :files
+      attr_reader :component_path, :relative_path, :type, :subdirectory, :pack
 
-      def initialize(name, type:, subdirectory: [], pack:, files: [])
+      def initialize(name, type:, pack:, subdirectory: [])
         @pack = pack
         @name = name
         @type = type # :global | :shared | :components
         @subdirectory = subdirectory
-        @files = files
+
 
         @canonical_name = if type == :global
           'global'
@@ -25,12 +25,38 @@ module WeirdPhlex
         @component_path = @pack.pack_path.join(*name_parts)
       end
 
-      def to_s
-        "#{@name} - #{@files.count} file#{'s' if @files.count != 1}"
-      end
-
       def inspect
         "NEW COMPONENT: #{@canonical_name}"
+      end
+
+      def new_files
+        Dir['**/*', base: @component_path.to_s]
+          .reject { @component_path.join(_1).directory? }
+          .map { normalize_filenames(_1) }
+          .uniq
+          .map { NewFile.new(_1, component: self) }
+      end
+
+      def normalize_filenames(name)
+        name.gsub(%r(\.\d+\.(create|update|delete)), '')
+      end
+
+      def self.new_or_nil(relative_path, pack:)
+        if relative_path == '_global_/'
+          new('global', type: :global, pack:)
+        elsif relative_path.start_with?('shared/')
+          subdirectory = relative_path.delete_suffix('/').split('/')
+          subdirectory.shift
+          name = subdirectory.pop.delete_prefix('_').delete_suffix('_')
+          new(name, type: :shared, pack:, subdirectory:)
+        elsif relative_path.start_with?('components/')
+          subdirectory = relative_path.delete_suffix('/').split('/')
+          subdirectory.shift
+          name = subdirectory.pop.delete_prefix('_').delete_suffix('_')
+          new(name, type: :components, pack:, subdirectory:)
+        else
+          nil
+        end
       end
     end
   end
