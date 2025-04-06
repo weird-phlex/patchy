@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 require 'thor'
-require 'weird_phlex/pack_subcommand'
 
 module WeirdPhlex
-  class CLI < Thor
+  class PackSubcommand < Thor
     class_option :help, type: :boolean, aliases: 'h', desc: 'Display help for a command'
     map 'g' => :generate, 'a' => :generate, 'add' => :generate
-
-    desc 'generate [ARGS]', 'Add selected components to your application. Add all with `-a/--all`'
-    def generate(*args)
-      WeirdPhlex::Main.generate(args)
-    end
-
-    desc 'pack <name> SUBCOMMAND', 'subcommands for dealing with a single component pack'
-    subcommand 'pack', PackSubcommand
 
     def self.exit_on_failure?
       true
     end
+
+    desc 'generate [ARGS]', 'Add selected components to your application. Add all with `-a/--all`'
+    def pack(name, *args)
+      ::WeirdPhlex::Main.pack(name, args)
+    end
+
+    default_task :pack
+
   end
 end
