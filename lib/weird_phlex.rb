@@ -13,3 +13,9 @@ require 'weird_phlex/component_pack'
 require 'weird_phlex/planner'
 require 'weird_phlex/main'
 require 'weird_phlex/cli'
+
+module WeirdPhlex
+  def self.root
+    Pathname.new(File.dirname(__dir__))
+  end
+end
