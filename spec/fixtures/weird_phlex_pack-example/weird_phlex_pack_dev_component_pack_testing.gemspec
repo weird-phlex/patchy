@@ -3,7 +3,7 @@
 require_relative "lib/weird_phlex_pack/dev_component_pack/testing/version"
 
 Gem::Specification.new do |s|
-  s.name = "pack"
+  s.name = "weird_phlex_pack-example"
   s.version = WeirdPhlexPack::DevComponentPack::Testing::VERSION
   s.authors = ["Klaus Weidinger"]
   s.email = ["Klaus Weidinger"]

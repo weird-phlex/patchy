@@ -2,7 +2,7 @@
 
 RSpec.describe 'integration' do
   it 'run successfully bundle exec weird_phlex generate' do
-    setup_fixtures('target_project', 'pack')
+    setup_fixtures('target_project', 'weird_phlex_pack-example')
 
     expect do
       fixture_command('target_project', 'bundle exec weird_phlex generate')
