@@ -1,0 +1,49 @@
+<div data-controller="ui--sheet" id="<%= options[:id] %>">
+  <div data-action="click->ui--sheet#open"><%= content_for(:sheet_trigger) %></div>
+
+  <%= render "components/ui/shared/backdrop", as: "modal" %>
+
+  <div
+    role="dialog"
+    data-state="<%= options[:state]%>"
+    data-ui--sheet-target="dialog"
+    class="<%= tw("data-[state=closed]:hidden data-[state=open]:block fixed z-50 gap-4 bg-background p-6 shadow-lg
+                  transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300
+                  data-[state=open]:duration-500 inset-y-0 h-full border-l sm:max-w-sm",
+                  "data-[state=closed]:slide-out-to-#{options[:direction]}
+                  data-[state=open]:slide-in-from-#{options[:direction]}",
+                  direction_class(options[:direction]), options[:width],
+                  options[:class]) %>"
+        tabindex="-1"
+        style="pointer-events: auto">
+      <div data-ui--sheet-target="content"><%= content_for(:sheet_content) %></div>
+      <button
+        data-ui--sheet-target="closeButton"
+        type="button"
+        class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4">
+          <line
+            x1="18"
+            x2="6"
+            y1="6"
+            y2="18"></line>
+          <line
+            x1="6"
+            x2="18"
+            y1="6"
+            y2="18"></line>
+        </svg>
+        <span class="sr-only">Close</span>
+      </button>
+  </div>
+</div>

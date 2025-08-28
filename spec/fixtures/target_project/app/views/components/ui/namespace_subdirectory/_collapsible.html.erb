@@ -1,0 +1,34 @@
+<div
+  data-state="closed"
+  class="w-[350px] space-y-2"
+  data-controller="ui--collapsible">
+  <div
+    class="flex items-center justify-between space-x-4 px-4"
+    data-action="click->ui--collapsible#toggle">
+    <h4 class="text-sm font-semibold"><%= trigger %></h4>
+    <%= render_button variant: :ghost, data: {state: "closed"}, aria: {expanded: false}, class: "px-[0.75em] " do %>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-4 w-4">
+        <path d="m7 15 5 5 5-5"></path>
+        <path d="m7 9 5-5 5 5"></path>
+      </svg>
+      <span class="sr-only">Toggle</span>
+    <% end %>
+  </div>
+  <%= yield :preview %>
+  <div
+    data-ui--collapsible-target="item"
+    data-state="closed"
+    class="space-y-2 hidden">
+    <%= yield :body %>
+  </div>
+</div>
