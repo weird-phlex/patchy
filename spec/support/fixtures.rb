@@ -16,13 +16,16 @@ def setup_fixtures(project, *component_packs)
     )
   end
 
-  fixture_command(project, 'bundle check || bundle --force')
+  fixture_command(project, 'bundle check || bundle install')
 end
 
 def fixture_command(project, command)
   project_path = TMP_FOLDER.join(project)
 
-  system("cd #{project_path} && BUNDLE_GEMFILE=#{project_path}/Gemfile #{command}", exception: true)
+  system(
+    "cd #{project_path} && unset BUNDLER_SETUP RUBYOPT BUNDLE_GEMFILE && #{command}",
+    exception: true,
+  )
 end
 
 RSpec.configure do |config|
