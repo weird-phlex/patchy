@@ -16,8 +16,8 @@ module Components::DropdownMenuHelper
     content_for :dropdown_menu_content, capture(&block), flush: true
   end
 
-  def dropdown_menu_item(label = nil, **options, &block)
-    content = (label || capture(&block))
+  def dropdown_menu_item(label = nil, **_options, &block)
+    content = label || capture(&block)
     render "components/ui/shared/menu_item", content: content
   end
 end

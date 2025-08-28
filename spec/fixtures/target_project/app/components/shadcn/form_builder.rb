@@ -37,7 +37,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
       type: "email", **options
     )
   end
-  
+
   def text_area(method, options = {})
     error_class = @object.errors[method].any? ? "error" : ""
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
@@ -48,7 +48,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
       type: "text", **options
     )
   end
-  
+
   def submit(value = nil, options = {})
     @template.render_button(value, **options)
   end

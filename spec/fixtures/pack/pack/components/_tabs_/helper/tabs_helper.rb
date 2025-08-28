@@ -13,7 +13,7 @@ module Components::TabsHelper
     options[:id] ||= "tab_#{title.parameterize}"
     options[:state] = options[:active] ? "active" : "inactive"
 
-    @_tabs << {title: title, id: options[:id]}
+    @_tabs << { title: title, id: options[:id] }
     render("components/ui/tabs/tab", title:, options:)
   end
 

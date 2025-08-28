@@ -12,9 +12,4 @@ begin
   RuboCop::RakeTask.new("rubocop:md") do |task|
     task.options << %w[-c .rubocop-md.yml]
   end
-rescue LoadError
-  task(:rubocop) {}
-  task("rubocop:md") {}
 end
-
-task default: %w[rubocop spec]

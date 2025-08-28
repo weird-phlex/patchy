@@ -12,7 +12,7 @@ class Shadcn::SelectComponent
 
   def option(value:, label: nil, &block)
     content = label || view_context.capture(&block)
-    option_options = {value: value}
+    option_options = { value: value }
     option_options[:selected] = "selected" if value == selected
     view_context.content_tag :option, content, option_options
   end
