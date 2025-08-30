@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 TMP_FOLDER=WeirdPhlex.root.join('tmp/projects').freeze
+PROJECTS_FOLDER=WeirdPhlex.root.join('spec/fixtures/projects').freeze
+PACKS_FOLDER=WeirdPhlex.root.join('spec/fixtures/packs').freeze
 
 def setup_fixtures(project, *component_packs)
   TMP_FOLDER.mkpath
   FileUtils.cp_r(
-    WeirdPhlex.root.join("spec/fixtures/#{project}/"),
-    TMP_FOLDER.join(project),
+    PROJECTS_FOLDER.join(project),
+    TMP_FOLDER.join(project)
   )
 
   component_packs.each do |component_pack|
     TMP_FOLDER.join("#{project}/Gemfile").write(
-      "gem '#{component_pack}', path: '#{WeirdPhlex.root.join("spec/fixtures/#{component_pack}")}'",
+      "gem '#{component_pack}', path: '#{PACKS_FOLDER.join(component_pack)}'",
       mode: 'a+',
     )
   end
