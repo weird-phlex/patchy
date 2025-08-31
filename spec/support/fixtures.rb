@@ -8,6 +8,8 @@ PROJECTS_FOLDER    = WeirdPhlex.root.join('spec/fixtures/projects').freeze
 PACKS_FOLDER       = WeirdPhlex.root.join('spec/fixtures/packs').freeze
 COMPONENTS_FOLDER  = WeirdPhlex.root.join('spec/fixtures/components').freeze
 
+Source = Struct.new(:root)
+
 class Pack
   attr_reader :pack_name
 
@@ -36,7 +38,8 @@ class Pack
     gemspec = Gem::Specification.load(gemspec_path)
     # needed so that #gem_dir method does not return a
     # path with version number.
-    gemspec.source = OpenStruct.new(root: TMP_PACKS_FOLDER.join(pack_name).to_s)
+    #
+    gemspec.source = Source.new(TMP_PACKS_FOLDER.join(pack_name))
     gemspec
   end
 end
