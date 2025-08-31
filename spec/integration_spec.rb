@@ -2,12 +2,12 @@
 
 RSpec.describe 'integration' do
   it 'run successfully bundle exec weird_phlex generate' do
-    with_project('target_project')
+    with_project('after_pack_setup')
     with_pack('weird_phlex_pack-example') do |pack|
       pack.with_component('_tabs_')
     end
 
-    within_project("target_project") do
+    within_project("after_pack_setup") do
       WeirdPhlex::CLI.start(["generate"])
 
       expect(Pathname.new("app/views/components/ui/_tabs.html.erb")).to exist
