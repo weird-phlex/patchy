@@ -4,9 +4,10 @@ RSpec.describe 'integration' do
   it 'run successfully bundle exec weird_phlex generate' do
     setup_fixtures('target_project', 'weird_phlex_pack-example')
 
-    expect do
-      fixture_command('target_project', 'bundle exec weird_phlex generate')
-    end.not_to raise_error
-    expect(WeirdPhlex.root.join("tmp/projects/target_project/app/views/components/ui/_tabs.html.erb")).to exist
+    within_project("target_project") do
+      WeirdPhlex::CLI.start(["generate"])
+
+      expect(Pathname.new("app/views/components/ui/_tabs.html.erb")).to exist
+    end
   end
 end

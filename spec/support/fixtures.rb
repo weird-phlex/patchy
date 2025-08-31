@@ -11,23 +11,21 @@ def setup_fixtures(project, *component_packs)
     TMP_FOLDER.join(project)
   )
 
-  component_packs.each do |component_pack|
-    TMP_FOLDER.join("#{project}/Gemfile").write(
-      "gem '#{component_pack}', path: '#{PACKS_FOLDER.join(component_pack)}'",
-      mode: 'a+',
-    )
+  loaded_specs = component_packs.reduce(Gem.loaded_specs.dup) do |hash, component_pack|
+    gemspec_path = PACKS_FOLDER.join("#{component_pack}/#{component_pack}.gemspec").to_s
+    gemspec = Gem::Specification.load(gemspec_path)
+    # needed so that #gem_dir method does not return a
+    # path with version number.
+    gemspec.source = double(root: PACKS_FOLDER.join(component_pack).to_s)
+
+    hash.merge!({ component_pack => Gem::Specification.load(gemspec_path) })
   end
 
-  fixture_command(project, 'bundle check || bundle install')
+  allow(Gem).to receive(:loaded_specs).and_return loaded_specs
 end
 
-def fixture_command(project, command)
-  project_path = TMP_FOLDER.join(project)
-
-  system(
-    "cd #{project_path} && unset BUNDLER_SETUP RUBYOPT BUNDLE_GEMFILE && #{command}",
-    exception: true,
-  )
+def within_project(project, &block)
+  Dir.chdir(TMP_FOLDER.join(project), &block)
 end
 
 RSpec.configure do |config|
