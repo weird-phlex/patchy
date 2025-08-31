@@ -1,1 +1,1 @@
-// basic_component > stimulus_controller/ -->
+// basic_component > stimulus_controller/
