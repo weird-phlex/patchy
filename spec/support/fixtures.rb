@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "ostruct"
-
 TMP_PROJECTS_FOLDER = WeirdPhlex.root.join('tmp/projects').freeze
 TMP_PACKS_FOLDER   = WeirdPhlex.root.join('tmp/packs').freeze
 PROJECTS_FOLDER    = WeirdPhlex.root.join('spec/fixtures/projects').freeze

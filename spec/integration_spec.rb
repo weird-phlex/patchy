@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'integration' do
-  it 'run successfully weird_phlex generate' do
+  it 'successfully runs weird_phlex generate' do
     with_project('after_pack_setup')
     with_pack('weird_phlex_pack-example') do |pack|
       pack.with_component('_basic_component_')
