@@ -1,43 +1,84 @@
 # frozen_string_literal: true
 
-TMP_FOLDER=WeirdPhlex.root.join('tmp/projects').freeze
-PROJECTS_FOLDER=WeirdPhlex.root.join('spec/fixtures/projects').freeze
-PACKS_FOLDER=WeirdPhlex.root.join('spec/fixtures/packs').freeze
+require "ostruct"
 
-def setup_fixtures(project, *component_packs)
-  TMP_FOLDER.mkpath
-  FileUtils.cp_r(
-    PROJECTS_FOLDER.join(project),
-    TMP_FOLDER.join(project)
-  )
+TMP_PROJECTS_FOLDER = WeirdPhlex.root.join('tmp/projects').freeze
+TMP_PACKS_FOLDER   = WeirdPhlex.root.join('tmp/packs').freeze
+PROJECTS_FOLDER    = WeirdPhlex.root.join('spec/fixtures/projects').freeze
+PACKS_FOLDER       = WeirdPhlex.root.join('spec/fixtures/packs').freeze
+COMPONENTS_FOLDER  = WeirdPhlex.root.join('spec/fixtures/components').freeze
 
-  loaded_specs = component_packs.reduce(Gem.loaded_specs.dup) do |hash, component_pack|
-    gemspec_path = PACKS_FOLDER.join("#{component_pack}/#{component_pack}.gemspec").to_s
+class Pack
+  attr_reader :pack_name
+
+  def initialize(pack_name)
+    @pack_name = pack_name
+  end
+
+  def with_component(component)
+    components_path.mkpath
+    FileUtils.cp_r(
+      COMPONENTS_FOLDER.join(component),
+      components_path,
+    )
+  end
+
+  def pack_path
+    @pack_path ||= TMP_PACKS_FOLDER.join(pack_name)
+  end
+
+  def components_path
+    @components_path ||= pack_path.join("pack/components")
+  end
+
+  def gemspec
+    gemspec_path = PACKS_FOLDER.join("#{pack_path}/#{pack_name}.gemspec").to_s
     gemspec = Gem::Specification.load(gemspec_path)
     # needed so that #gem_dir method does not return a
     # path with version number.
-    gemspec.source = double(root: PACKS_FOLDER.join(component_pack).to_s)
-
-    hash.merge!({ component_pack => Gem::Specification.load(gemspec_path) })
+    gemspec.source = OpenStruct.new(root: TMP_PACKS_FOLDER.join(pack_name).to_s)
+    gemspec
   end
+end
+
+def with_project(project)
+  TMP_PROJECTS_FOLDER.mkpath
+  FileUtils.cp_r(
+    PROJECTS_FOLDER.join(project),
+    TMP_PROJECTS_FOLDER.join(project),
+  )
+end
+
+def with_pack(pack_name)
+  TMP_PACKS_FOLDER.mkpath
+  FileUtils.cp_r(
+    PACKS_FOLDER.join(pack_name),
+    TMP_PACKS_FOLDER.join(pack_name),
+  )
+
+  pack = Pack.new(pack_name)
+
+  loaded_specs = Gem.loaded_specs.merge({ pack_name => pack.gemspec })
 
   allow(Gem).to receive(:loaded_specs).and_return loaded_specs
+
+  yield(pack)
 end
 
 def within_project(project, &block)
-  Dir.chdir(TMP_FOLDER.join(project), &block)
+  Dir.chdir(TMP_PROJECTS_FOLDER.join(project), &block)
+end
+
+def remove_tmp_folders
+  [TMP_PROJECTS_FOLDER, TMP_PACKS_FOLDER].each do |folder|
+    next unless folder.exist?
+
+    folder.rmtree
+  end
 end
 
 RSpec.configure do |config|
-  config.before :suite do
-    next unless TMP_FOLDER.exist?
+  config.before(:suite) { remove_tmp_folders }
 
-    TMP_FOLDER.rmtree
-  end
-
-  config.after do
-    next unless TMP_FOLDER.exist?
-
-    TMP_FOLDER.rmtree
-  end
+  config.after { remove_tmp_folders }
 end

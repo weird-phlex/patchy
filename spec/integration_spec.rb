@@ -2,7 +2,10 @@
 
 RSpec.describe 'integration' do
   it 'run successfully bundle exec weird_phlex generate' do
-    setup_fixtures('target_project', 'weird_phlex_pack-example')
+    with_project('target_project')
+    with_pack('weird_phlex_pack-example') do |pack|
+      pack.with_component('_tabs_')
+    end
 
     within_project("target_project") do
       WeirdPhlex::CLI.start(["generate"])
