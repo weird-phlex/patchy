@@ -21,5 +21,5 @@ assignees: dunkelziffer
 
 **Framework Version (Rails, whatever):**
 
-**Weird Phlex Version:**
+**Patchy Version:**
 

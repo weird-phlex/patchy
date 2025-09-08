@@ -1,7 +1,7 @@
-[![Gem Version](https://badge.fury.io/rb/weird_phlex.svg)](https://rubygems.org/gems/weird_phlex)
-[![CI](https://github.com/weird-phlex/weird_phlex/workflows/CI/badge.svg)](https://github.com/weird-phlex/weird_phlex/actions)
+[![Gem Version](https://badge.fury.io/rb/patchy.svg)](https://rubygems.org/gems/patchy)
+[![CI](https://github.com/weird-phlex/patchy/workflows/CI/badge.svg)](https://github.com/weird-phlex/patchy/actions)
 
-# Weird Phlex
+# Patchy
 
 A package manager for "soft dependencies", mainly aimed at UI components
 
@@ -13,7 +13,7 @@ Adding to a gem:
 # my-cool-gem.gemspec
 Gem::Specification.new do |spec|
   # ...
-  spec.add_dependency "weird_phlex"
+  spec.add_dependency "patchy"
   # ...
 end
 ```
@@ -22,7 +22,7 @@ Or adding to your project:
 
 ```ruby
 # Gemfile
-gem "weird_phlex"
+gem "patchy"
 ```
 
 ### Supported Ruby versions
