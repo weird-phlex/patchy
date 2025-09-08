@@ -9,7 +9,7 @@ end
 ENV['RAILS_ENV'] = 'test'
 
 require 'open3'
-require 'weird_phlex'
+require 'patchy'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 

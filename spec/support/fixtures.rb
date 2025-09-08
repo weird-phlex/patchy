@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-TMP_PROJECTS_FOLDER = WeirdPhlex.root.join('tmp/projects').freeze
-TMP_PACKS_FOLDER   = WeirdPhlex.root.join('tmp/packs').freeze
-PROJECTS_FOLDER    = WeirdPhlex.root.join('spec/fixtures/projects').freeze
-PACKS_FOLDER       = WeirdPhlex.root.join('spec/fixtures/packs').freeze
-COMPONENTS_FOLDER  = WeirdPhlex.root.join('spec/fixtures/components').freeze
+TMP_PROJECTS_FOLDER = Patchy.root.join('tmp/projects').freeze
+TMP_PACKS_FOLDER   = Patchy.root.join('tmp/packs').freeze
+PROJECTS_FOLDER    = Patchy.root.join('spec/fixtures/projects').freeze
+PACKS_FOLDER       = Patchy.root.join('spec/fixtures/packs').freeze
+COMPONENTS_FOLDER  = Patchy.root.join('spec/fixtures/components').freeze
 
 Source = Struct.new(:root)
 

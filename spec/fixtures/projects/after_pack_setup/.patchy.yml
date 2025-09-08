@@ -1,0 +1,42 @@
+# not yet functional
+additional_packs:
+  - shadcn
+
+# not yet functional
+hooks:
+  zeitwerk:
+    roots:
+      - app/components
+  tailwind:
+    roots:
+      - app/views
+      - app/components
+      - app/assets/stylesheets
+  esbuild:
+    roots:
+      - app/assets/stylesheets
+      - app/assets/images
+      - app/javascript
+  importmaps:
+    pins:
+      - echarts
+
+namespaces:
+  # hardcoded to `main` so far
+  main:
+    subdirectory: '.'
+    packs:
+      # not yet functional, array because order matters
+      - name: example
+        component_aliases:
+          button: 'simple_button'
+    parts:
+      components:
+        helper: 'app/helpers/components'
+        partial: 'app/views/components/ui'
+        stimulus_controller: 'app/javascript/controllers/ui'
+      shared:
+        partial: 'app/views/components/ui/shared'
+        form_builder: 'app/components/shadcn'
+      global:
+        helper: 'app/helpers'
