@@ -1,9 +1,6 @@
-shared_examples 'correct delegation' do |_binary|
-  def run(*argv)
-    raise 'Only strings, please!' unless argv.all? { _1.is_a? String }
-    Patchy::CLI.start(argv)
-  end
+# frozen_string_literal: true
 
+describe 'generate delegation' do
   it 'delegates g correctly' do
     expect(Patchy::Main).to receive(:generate).with(anything)
     run('g')

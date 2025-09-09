@@ -9,11 +9,13 @@ class Test::Pack
     @components_path = @pack_path.join('pack', 'components')
   end
 
-  def with_component(component)
-    components_path.mkpath
+  def with_component(component, at: nil)
+    path = at ? components_path.join(at) : components_path
+
+    path.mkpath
     FileUtils.cp_r(
       Test.component_fixture(component),
-      components_path,
+      path,
     )
   end
 
