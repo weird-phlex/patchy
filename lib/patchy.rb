@@ -7,10 +7,4 @@ loader.setup # ready!
 
 require 'active_support/all'
 
-module Patchy
-  def self.root
-    Pathname.new(File.dirname(__dir__))
-  end
-end
-
 # loader.eager_load # optionally

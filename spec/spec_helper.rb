@@ -11,7 +11,14 @@ ENV['RAILS_ENV'] = 'test'
 require 'open3'
 require 'patchy'
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+require 'zeitwerk'
+support_loader = Zeitwerk::Loader.new
+support_loader.tag = 'spec'
+support_loader.push_dir("#{__dir__}/support")
+support_loader.ignore("#{__dir__}/support/rspec")
+support_loader.setup
+
+Dir["#{File.dirname(__FILE__)}/support/rspec/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
