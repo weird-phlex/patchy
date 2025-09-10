@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 RSpec.configure do |config|
   config.include(Test::Fixtures)
 
