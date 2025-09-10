@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'patchy/component_pack/component'
-require 'patchy/component_pack/config'
-require 'patchy/component_pack/file'
-
 module Patchy
   class ComponentPack
     IMPLICIT_PACK_REGEX = /\Apatchy_pack-(?<pack_name>.+)\Z/

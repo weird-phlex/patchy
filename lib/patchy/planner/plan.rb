@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'patchy/project/target_file'
-require 'patchy/planner/plan/copy_action'
-
 module Patchy
   class Planner
     class Plan

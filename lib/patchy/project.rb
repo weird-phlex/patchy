@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'patchy/project/component'
-require 'patchy/project/config'
-require 'patchy/project/file'
-require 'patchy/project/target_file'
-
 module Patchy
   class Project
     attr_reader :config, :root_path
