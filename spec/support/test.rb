@@ -1,11 +1,19 @@
 class Test
   ROOT = Pathname.new(File.dirname(__dir__)).freeze
 
-  PROJECTS_FOLDER = ROOT.join('fixtures/projects').freeze
-  PACKS_FOLDER = ROOT.join('fixtures/packs').freeze
-  COMPONENTS_FOLDER = ROOT.join('fixtures/components').freeze
-
   def self.root
     ROOT
+  end
+
+  def self.project_fixture(name)
+    ROOT.join('fixtures', 'projects', name)
+  end
+
+  def self.pack_fixture(name)
+    ROOT.join('fixtures', 'packs', name)
+  end
+
+  def self.component_fixture(name)
+    ROOT.join('fixtures', 'components', name)
   end
 end
