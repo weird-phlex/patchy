@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'patchy/planner/plan'
-
 module Patchy
   class Planner
     def self.initial_full_installation_plan

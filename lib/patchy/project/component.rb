@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'patchy/project/file'
-
 module Patchy
   class Project
     class Component
