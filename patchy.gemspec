@@ -38,4 +38,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '>= 13.0'
   s.add_development_dependency 'rspec', '>= 3.9'
   s.add_development_dependency 'debug'
+  s.add_development_dependency 'makandra-rubocop'
 end
