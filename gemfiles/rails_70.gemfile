@@ -3,5 +3,6 @@ source 'https://rubygems.org'
 gem 'rails', '~> 7.0'
 gem 'sqlite3', '~> 1.4'
 gem 'zeitwerk', '< 2.7'
+gem 'erb', '< 5.0'
 
 gemspec path: '..'
