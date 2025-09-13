@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker compose -f "$(cat docker/.selected)/docker-compose.yml" "$@"

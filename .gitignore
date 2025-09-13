@@ -31,14 +31,13 @@ spec/dummy/db/*.sqlite3
 spec/dummy/db/*.sqlite3-journal
 spec/dummy/tmp/
 
-Gemfile.lock
-Gemfile.local
+/Gemfile.lock
 .rspec-local
-.ruby-version
+/.ruby-version
 *.gem
 
 tmp/
 .rbnext/
 
 gemfiles/*.lock
-
+docker/.selected

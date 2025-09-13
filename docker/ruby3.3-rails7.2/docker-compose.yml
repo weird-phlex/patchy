@@ -1,0 +1,21 @@
+services:
+  gem:
+    build:
+      context: .
+    volumes:
+      - ../..:/app
+    working_dir: /app
+    # depends_on:
+    #   - db
+    # environment:
+      # - DATABASE_URL=postgres://postgres:password@db:5432/my_gem_test
+    stdin_open: true
+    tty: true
+
+  # db:
+  #   image: postgres:14
+  #   environment:
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: my_gem_test
+  #   ports:
+  #     - "5433:5432"
