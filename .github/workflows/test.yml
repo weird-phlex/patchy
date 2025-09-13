@@ -20,7 +20,7 @@ jobs:
         bundler-cache: true
     - name: rubocop
       run: |
-        bundle exec rubocop --debug
+        bundle exec rubocop
 
   rspec:
     runs-on: ubuntu-latest
