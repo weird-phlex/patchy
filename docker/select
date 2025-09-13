@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Directory containing environments
+ENV_ROOT="./docker"
+
+# File to store the selected environment
+SELECTION_FILE="docker/.selected"
+
+# Get all subdirectories in $ENV_ROOT that contain docker-compose.yml
+mapfile -t ENVIRONMENTS < <(find "$ENV_ROOT" -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/docker-compose.yml" \; -print | sort)
+
+# Check if any environments are found
+if [ ${#ENVIRONMENTS[@]} -eq 0 ]; then
+  echo "No environments with docker-compose.yml found in $ENV_ROOT"
+  exit 1
+fi
+
+# Display environments as a numbered menu
+echo "Select an environment:"
+select ENV_PATH in "${ENVIRONMENTS[@]}"; do
+  if [[ -n "$ENV_PATH" ]]; then
+    echo "$ENV_PATH" > "$SELECTION_FILE"
+    echo "Selected: $ENV_PATH"
+    echo "Saved selection to $SELECTION_FILE"
+    break
+  else
+    echo "Invalid selection. Try again."
+  fi
+done
