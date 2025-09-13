@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     patchy (0.0.1)
       activesupport
