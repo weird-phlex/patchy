@@ -300,7 +300,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 2.3.1)
   debug
-  makandra-rubocop
+  makandra-rubocop (>= 16.2.0)
   patchy!
   rails (~> 7.1)
   rake (>= 13.0)
