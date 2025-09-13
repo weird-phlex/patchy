@@ -23,11 +23,11 @@ describe 'integration - add' do
             main: {
               parts: {
                 components: {
-                  partial: 'app/views'
-                }
-              }
-            }
-          }
+                  partial: 'app/views',
+                },
+              },
+            },
+          },
         )
       end
     end
@@ -44,7 +44,7 @@ describe 'integration - add' do
     end
   end
 
-  it 'should respect a components outer subdirectories' do
+  it 'respects a components outer subdirectories' do
     with_project('after_pack_setup')
 
     with_pack('patchy_pack-example') do |pack|
@@ -58,7 +58,7 @@ describe 'integration - add' do
     end
   end
 
-  it 'should respect a components inner subdirectories' do
+  it 'respects a components inner subdirectories' do
     with_project('after_pack_setup')
 
     with_pack('patchy_pack-example') do |pack|
@@ -72,7 +72,7 @@ describe 'integration - add' do
     end
   end
 
-  it 'should correctly handle a component with both outer and inner subdirectories' do
+  it 'correctly handles a component with both outer and inner subdirectories' do
     with_project('after_pack_setup')
 
     with_pack('patchy_pack-example') do |pack|
