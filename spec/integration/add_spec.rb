@@ -16,4 +16,20 @@ describe 'integration - add' do
     end
   end
 
+  it 'successfully runs patchy add for a subset of components' do
+    with_project('after_pack_setup')
+
+    with_pack('patchy_pack-example') do |pack|
+      pack.with_component('_basic_component_')
+      pack.with_component('_component_with_inner_subdirectory_')
+    end
+
+    within_project("after_pack_setup") do
+      run('add', '*/component_with_inner_subdirectory')
+
+      expect(Pathname.new("app/views/components/ui/_basic_component.html.erb")).not_to exist
+      expect(Pathname.new("app/views/components/ui/INNER/_basic_component.html.erb")).to exist
+    end
+  end
+
 end

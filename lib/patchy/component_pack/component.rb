@@ -3,7 +3,7 @@
 module Patchy
   class ComponentPack
     class Component
-      attr_reader :component_path, :relative_path, :type, :subdirectory, :pack
+      attr_reader :component_path, :relative_path, :type, :subdirectory, :pack, :name
 
       def initialize(name, type:, pack:, subdirectory: [])
         @pack = pack

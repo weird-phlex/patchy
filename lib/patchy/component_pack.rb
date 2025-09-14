@@ -4,7 +4,7 @@ module Patchy
   class ComponentPack
     IMPLICIT_PACK_REGEX = /\Apatchy_pack-(?<pack_name>.+)\Z/
 
-    attr_reader :config, :root_path, :pack_path
+    attr_reader :config, :root_path, :pack_path, :gem
 
     def initialize(gem_specification)
       @gem = gem_specification.name
