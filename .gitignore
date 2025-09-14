@@ -38,4 +38,4 @@ Gemfile.local
 tmp/
 .rbnext/
 
-gemfiles/rails_main.gemfile.lock
+Gemfile.ruby34_rails_main.lock
