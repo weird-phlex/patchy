@@ -1,5 +1,5 @@
 PATH
-  remote: ..
+  remote: .
   specs:
     patchy (0.0.1)
       activesupport
@@ -140,6 +140,7 @@ GEM
       rubocop-rspec_rails (~> 2.30.0)
     marcel (1.0.4)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     mutex_m (0.3.0)
     net-imap (0.5.10)
@@ -152,11 +153,14 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.9-aarch64-linux-gnu)
+    nokogiri (1.18.9)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.18.9-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.18.9-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.9-arm-linux-gnu)
+    nokogiri (1.18.9-arm-linux)
       racc (~> 1.4)
     nokogiri (1.18.9-arm-linux-musl)
       racc (~> 1.4)
@@ -164,7 +168,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-linux-gnu)
+    nokogiri (1.18.9-x86_64-linux)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
@@ -289,15 +293,15 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  aarch64-linux-gnu
+  aarch64-linux
   aarch64-linux-musl
   arm-linux
-  arm-linux-gnu
+  arm-linux
   arm-linux-musl
   arm64-darwin
   x86_64-darwin
   x86_64-linux
-  x86_64-linux-gnu
+  x86_64-linux
   x86_64-linux-musl
 
 DEPENDENCIES
