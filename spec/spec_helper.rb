@@ -16,6 +16,7 @@ support_loader = Zeitwerk::Loader.new
 support_loader.tag = 'spec'
 support_loader.push_dir("#{__dir__}/support")
 support_loader.ignore("#{__dir__}/support/rspec")
+support_loader.inflector.inflect('cli' => 'CLI')
 support_loader.setup
 
 Dir["#{File.dirname(__FILE__)}/support/rspec/**/*.rb"].each { |f| require f }

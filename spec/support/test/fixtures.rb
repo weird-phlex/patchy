@@ -1,10 +1,15 @@
 module Test::Fixtures
-  def with_project(project)
+  def with_project(project_name)
     tmp_projects_dir.mkpath
     FileUtils.cp_r(
-      Test.project_fixture(project),
-      tmp_projects_dir.join(project),
+      Test.project_fixture(project_name),
+      tmp_projects_dir.join(project_name),
     )
+
+    return unless block_given?
+
+    project = Test::Project.new(project_name, dir: tmp_projects_dir)
+    yield(project)
   end
 
   def with_pack(pack_name)

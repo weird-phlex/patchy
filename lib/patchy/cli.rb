@@ -9,7 +9,7 @@ module Patchy
 
     desc 'generate [ARGS]', 'Add selected components to your application. Add all with `-a/--all`'
     def generate(*args)
-      Patchy::Main.generate(args)
+      Patchy::Main.add(args)
     end
 
     def self.exit_on_failure?
