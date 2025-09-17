@@ -3,16 +3,12 @@
 module Patchy
   class Main
     class << self
-      # def add
-      #   Patchy::Planner.initial_full_installation_plan.perform!
-      # end
 
       def add(*args)
         glob_patterns = args.map do |glob|
           parts = glob.split('/')
           { pack: parts.first, component: parts.last }
         end
-
 
         available_components = Patchy::ComponentPack.all.flat_map(&:components)
 
