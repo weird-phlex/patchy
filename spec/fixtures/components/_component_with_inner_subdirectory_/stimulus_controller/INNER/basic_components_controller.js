@@ -1,1 +1,1 @@
-// basic_component > stimulus_controller/
+// component_with_inner_subdirectory > stimulus_controller
