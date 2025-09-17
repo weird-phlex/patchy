@@ -68,7 +68,7 @@ describe 'unit - add' do
     within_project("after_pack_setup") do
       Patchy::Main.add('*/*')
 
-      expect(Pathname.new("app/views/components/ui/INNER/_basic_component.html.erb")).to exist
+      expect(Pathname.new("app/views/components/ui/INNER/_component_with_inner_subdirectory.html.erb")).to exist
     end
   end
 
@@ -82,7 +82,7 @@ describe 'unit - add' do
     within_project("after_pack_setup") do
       Patchy::Main.add('*/*')
 
-      expect(Pathname.new("app/views/components/ui/OUTER/INNER/_basic_component.html.erb")).to exist
+      expect(Pathname.new("app/views/components/ui/OUTER/INNER/_component_with_inner_subdirectory.html.erb")).to exist
     end
   end
 end

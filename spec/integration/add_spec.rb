@@ -28,7 +28,7 @@ describe 'integration - add' do
       run('add', '*/component_with_inner_subdirectory')
 
       expect(Pathname.new("app/views/components/ui/_basic_component.html.erb")).not_to exist
-      expect(Pathname.new("app/views/components/ui/INNER/_basic_component.html.erb")).to exist
+      expect(Pathname.new("app/views/components/ui/INNER/_component_with_inner_subdirectory.html.erb")).to exist
     end
   end
 
