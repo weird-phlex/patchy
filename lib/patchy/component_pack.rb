@@ -4,30 +4,18 @@ module Patchy
   class ComponentPack
     IMPLICIT_PACK_REGEX = /\Apatchy_pack-(?<pack_name>.+)\Z/
 
-    attr_reader :config, :root_path, :pack_path, :gem
+    attr_reader :config, :name, :root_path, :pack_path
 
-    def initialize(gem_specification)
-      @gem = gem_specification.name
-      @name = gem_specification.name.delete_prefix('patchy_pack-')
-      @root_path = Pathname.new(gem_specification.gem_dir)
+    def initialize(name:, root_path:)
+      @name = name
+      @root_path = Pathname.new(root_path)
       @pack_path = @root_path.join('pack')
       @config = Config.new(@root_path)
     end
 
-    def self.all(*explicit_pack_names)
-      all_gem_specifications(*explicit_pack_names).map { new(_1) }
-    end
-
-    # We assume that both `patchy` and all component packs are loaded in Bundler group `:development`
-    # and are thus available at the same time.
-    def self.all_gem_specifications(*explicit_pack_names)
-      Gem.loaded_specs
-        .select { |name, _gem_specification| pack_name?(name, explicit_pack_names:) }
-        .values
-    end
-
-    def self.pack_name?(name, explicit_pack_names:)
-      name.match(IMPLICIT_PACK_REGEX) || explicit_pack_names.include?(name)
+    def self.all(*_explicit_pack_names)
+      self::Type::Path.all +
+        self::Type::Gem.all
     end
 
     def components

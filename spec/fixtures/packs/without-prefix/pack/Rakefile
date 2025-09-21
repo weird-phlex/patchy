@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+# Library or variant specific setup tasks here
+# Maybe Thorfile instead
+# How to hook into main setup conditionally?

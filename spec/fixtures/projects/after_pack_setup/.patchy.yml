@@ -1,6 +1,6 @@
-# not yet functional
-additional_packs:
-  - shadcn
+component_packs:
+  include: []
+  exclude: []
 
 # not yet functional
 hooks:

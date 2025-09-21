@@ -32,11 +32,32 @@ module Patchy
           'type' => 'object',
           'additionalProperties' => false,
           'properties' => {
-            'additional_packs' => {
-              'type' => 'array',
-              'items' => {
-                'type' => 'string',
-              },
+            'component_packs' => {
+              'oneOf' => [
+                {
+                  'type' => 'array',
+                  'items' => {
+                    'type' => 'string',
+                  },
+                },
+                {
+                  'type' => 'object',
+                  'properties' => {
+                    'include' => {
+                      'type' => 'array',
+                      'items' => {
+                        'type' => 'string',
+                      },
+                    },
+                    'exclude' => {
+                      'type' => 'array',
+                      'items' => {
+                        'type' => 'string',
+                      },
+                    },
+                  },
+                },
+              ],
             },
             'hooks' => {
               'type' => 'object',
