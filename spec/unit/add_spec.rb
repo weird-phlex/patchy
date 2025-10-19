@@ -85,4 +85,23 @@ describe 'unit - add' do
       expect(Pathname.new("app/views/components/ui/OUTER/INNER/_component_with_inner_subdirectory.html.erb")).to exist
     end
   end
+
+  it 'raise an error when packs are duplicated' do
+    with_project('after_pack_setup') do |project|
+      project.config do |config|
+        config.deep_merge(
+          component_packs: [
+            'without-prefix',
+            '../../packs/without-prefix/',
+          ],
+        )
+      end
+    end
+
+    with_pack('without-prefix')
+
+    within_project("after_pack_setup") do
+      expect { Patchy::Main.add('*/*') }.to raise_error Patchy::ComponentPack::DuplicatePacks
+    end
+  end
 end
