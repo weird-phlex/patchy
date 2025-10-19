@@ -33,13 +33,6 @@ module Test::Fixtures
     Dir.chdir(tmp_projects_dir.join(project), &)
   end
 
-  def with_config(config_changes)
-    new_config = YAML.safe_load_file('.patchy.yml').merge(config_changes)
-    file = File.new('.patchy.yml', 'w')
-    file.write(YAML.dump(new_config))
-    file.close
-  end
-
   def tmp_projects_dir
     @tmp_dir.join('projects')
   end

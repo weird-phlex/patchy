@@ -33,7 +33,13 @@ describe 'integration - add' do
   end
 
   it 'successfully runs patchy add with custom component_packs' do
-    with_project('after_pack_setup')
+    with_project('after_pack_setup') do |project|
+      project.config do |config|
+        config.deep_merge(
+          component_packs: ['without-prefix', '../../packs/no-gem'],
+        )
+      end
+    end
 
     with_pack('patchy_pack-example') do |pack|
       pack.with_component('_basic_component_')
@@ -48,8 +54,6 @@ describe 'integration - add' do
     end
 
     within_project('after_pack_setup') do
-      with_config('component_packs' => ['without-prefix', '../../packs/no-gem'])
-
       run('add')
 
       expect(Pathname.new("app/views/components/ui/_basic_component.html.erb")).not_to exist

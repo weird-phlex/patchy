@@ -3,9 +3,39 @@
 module Patchy
   class Project
     class Config < ::Patchy::Config
+      GemPackConfig = Data.define(:use_default_packs, :included, :excluded)
+      DirectoryPackConfig = Data.define(:included, :excluded)
 
       def part_path(component_type, part_name)
         part_config('main').dig(component_type.to_s, part_name.to_s)
+      end
+
+      def gem_pack_config
+        case component_pack_config
+        when nil
+          GemPackConfig.new(use_default_packs: true, included: [], excluded: [])
+        when Array
+          included = component_pack_config.select { gem_pack?(_1) }
+          GemPackConfig.new(use_default_packs: false, included:, excluded: [])
+        when Hash
+          included = (component_pack_config['include'] || []).select { gem_pack?(_1) }
+          excluded = (component_pack_config['exclude'] || []).select { gem_pack?(_1) }
+          GemPackConfig.new(use_default_packs: true, included:, excluded:)
+        end
+      end
+
+      def directory_pack_config
+        case component_pack_config
+        when nil
+          DirectoryPackConfig.new(included: [], excluded: [])
+        when Array
+          included = component_pack_config.select { directory_pack?(_1) }
+          DirectoryPackConfig.new(included:, excluded: [])
+        when Hash
+          included = (component_pack_config['include'] || []).select { directory_pack?(_1) }
+          excluded = (component_pack_config['exclude'] || []).select { directory_pack?(_1) }
+          DirectoryPackConfig.new(included:, excluded:)
+        end
       end
 
       private
@@ -33,7 +63,7 @@ module Patchy
           'additionalProperties' => false,
           'properties' => {
             'component_packs' => {
-              'oneOf' => [
+              'anyOf' => [
                 {
                   'type' => 'array',
                   'items' => {
@@ -116,6 +146,18 @@ module Patchy
             'type' => 'string',
           },
         }
+      end
+
+      def component_pack_config
+        config['component_packs']
+      end
+
+      def gem_pack?(string)
+        !directory_pack?(string)
+      end
+
+      def directory_pack?(string)
+        string.include?('/')
       end
     end
   end

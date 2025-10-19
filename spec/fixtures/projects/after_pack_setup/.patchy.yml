@@ -1,7 +1,3 @@
-component_packs:
-  include: []
-  exclude: []
-
 # not yet functional
 hooks:
   zeitwerk:

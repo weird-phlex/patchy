@@ -14,8 +14,8 @@ module Patchy
     end
 
     def self.all(*_explicit_pack_names)
-      self::Type::Path.all +
-        self::Type::Gem.all
+      self::DirectoryPack.all +
+        self::GemPack.all
     end
 
     def components

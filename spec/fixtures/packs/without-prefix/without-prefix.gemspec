@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/patchy_pack/example/version"
+require_relative "lib/without_prefix/version"
 
 Gem::Specification.new do |s|
   s.name = "without-prefix"
-  s.version = PatchyPack::Example::VERSION
+  s.version = WithoutPrefix::VERSION
   s.authors = ["Klaus Weidinger"]
   s.email = ["Klaus Weidinger"]
   s.homepage = "https://github.com/weird-phlex/patchy_pack-example"
