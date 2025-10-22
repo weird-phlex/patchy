@@ -14,36 +14,22 @@ module Patchy
 
       class << self
         def all
-          return [] unless any_candidate?
+          return [] unless config.use_default_packs || config.included.any?
 
           ::Gem.loaded_specs
-            .select { |name, _gem_specification| include?(name) }
-            .reject { |name, _gem_specification| exclude?(name) }
+            .select { |name, _gem_specification| used?(name) }
             .values
             .map { new(_1) }
         end
 
         private
 
-        def any_candidate?
-          if component_packs.is_a? Array
-            component_packs.any? { _1.exclude?('/') }
-          else
-            true
-          end
+        def used?(name)
+          default = config.use_default_packs && name.match(IMPLICIT_PACK_REGEX)
+          (default || name.in?(config.included)) && !name.in?(config.excluded)
         end
 
-        def include?(name)
-          return true if name.in? component_packs.included
-
-          component_packs.use_default_packs && name.match(IMPLICIT_PACK_REGEX)
-        end
-
-        def exclude?(name)
-          name.in? component_packs.excluded
-        end
-
-        def component_packs
+        def config
           Project.new.config.gem_pack_config
         end
       end
