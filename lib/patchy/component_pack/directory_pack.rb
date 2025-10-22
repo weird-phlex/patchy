@@ -14,18 +14,12 @@ module Patchy
 
       class << self
         def all
-          (component_packs.included - component_packs.excluded)
-            .map { Pathname.new(_1) }
-            .map { new(_1) }
+          (config.included - config.excluded).map { new(_1) }
         end
 
         private
 
-        def file_component_candidates
-          component_packs.included - component_packs.excluded
-        end
-
-        def component_packs
+        def config
           Project.new.config.directory_pack_config
         end
       end
