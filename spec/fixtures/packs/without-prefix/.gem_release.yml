@@ -1,0 +1,3 @@
+bump:
+  file: lib/patchy_pack/example/version.rb
+  skip_ci: true

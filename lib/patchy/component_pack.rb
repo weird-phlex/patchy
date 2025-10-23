@@ -4,30 +4,15 @@ module Patchy
   class ComponentPack
     IMPLICIT_PACK_REGEX = /\Apatchy_pack-(?<pack_name>.+)\Z/
 
-    attr_reader :config, :root_path, :pack_path, :gem
+    class DuplicatePacks < RuntimeError; end
 
-    def initialize(gem_specification)
-      @gem = gem_specification.name
-      @name = gem_specification.name.delete_prefix('patchy_pack-')
-      @root_path = Pathname.new(gem_specification.gem_dir)
+    attr_reader :config, :name, :root_path, :pack_path
+
+    def initialize(name:, root_path:)
+      @name = name
+      @root_path = Pathname.new(root_path)
       @pack_path = @root_path.join('pack')
       @config = Config.new(@root_path)
-    end
-
-    def self.all(*explicit_pack_names)
-      all_gem_specifications(*explicit_pack_names).map { new(_1) }
-    end
-
-    # We assume that both `patchy` and all component packs are loaded in Bundler group `:development`
-    # and are thus available at the same time.
-    def self.all_gem_specifications(*explicit_pack_names)
-      Gem.loaded_specs
-        .select { |name, _gem_specification| pack_name?(name, explicit_pack_names:) }
-        .values
-    end
-
-    def self.pack_name?(name, explicit_pack_names:)
-      name.match(IMPLICIT_PACK_REGEX) || explicit_pack_names.include?(name)
     end
 
     def components
@@ -35,6 +20,26 @@ module Patchy
         .select { |relative_path| relative_path.match? %r(_[^/]+_/\z) }
         .map { |relative_path| Component.new_or_nil(relative_path, pack: self) }
         .compact
+    end
+
+    class << self
+      def all(*_explicit_pack_names)
+        packs = self::DirectoryPack.all + self::GemPack.all
+
+        check_no_duplications(packs)
+
+        packs
+      end
+
+      private
+
+      def check_no_duplications(packs)
+        packs.group_by(&:name).each do |name, packs_same_name|
+          next if packs_same_name.size <= 1
+
+          raise DuplicatePacks, "Duplicate packs are not allowed. There are #{packs_same_name.size} with the name #{name}."
+        end
+      end
     end
   end
 end

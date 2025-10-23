@@ -1,0 +1,27 @@
+setup:
+  dependencies:
+    - stimulus
+    - tailwind
+  hooks: 
+    importmaps: [root, javascript]
+    zeitwerk: [root, helpers, components]
+    rails: [root, view_path]
+  custom_rake_task: 'pack:install'
+  additional_instructions: 'Please also perform the following steps: 1, 2, 3'
+
+dependencies:
+  components/button:
+    # should probably be shared/components/helper
+    - shared/helper/components_helper.rb
+
+parts:
+  components:
+    helper: '@zeitwerk.helpers/components'
+    partial: '@rails.view_path/components/ui'
+    stimulus_controller: '@importmaps.javascript/controllers/ui'
+  shared:
+    form_builder: '@zeitwerk.components/shadcn'
+    helper: '@zeitwerk.helpers'
+    partial: '@rails.view_path/components/ui/shared'
+  global:
+    tailwind_config: '@rails.root/config'

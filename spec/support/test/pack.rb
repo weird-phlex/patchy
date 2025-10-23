@@ -21,6 +21,8 @@ class Test::Pack
 
   def gemspec
     gemspec_path = pack_path.join("#{pack_name}.gemspec").to_s
+    return unless File.exist?(gemspec_path)
+
     gemspec = Gem::Specification.load(gemspec_path)
     # Needed so that #gem_dir method does not return a
     # path with version number.

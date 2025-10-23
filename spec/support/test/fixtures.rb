@@ -21,10 +21,12 @@ module Test::Fixtures
 
     pack = Test::Pack.new(pack_name, dir: tmp_packs_dir)
 
-    loaded_specs = Gem.loaded_specs.merge({ pack_name => pack.gemspec })
-    allow(Gem).to receive(:loaded_specs).and_return loaded_specs
+    if pack.gemspec.present?
+      loaded_specs = Gem.loaded_specs.merge({ pack_name => pack.gemspec })
+      allow(Gem).to receive(:loaded_specs).and_return loaded_specs
+    end
 
-    yield(pack)
+    yield(pack) if block_given?
   end
 
   def within_project(project, &)
