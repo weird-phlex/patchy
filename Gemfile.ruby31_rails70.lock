@@ -140,6 +140,7 @@ GEM
       rubocop-rspec_rails (~> 2.30.0)
     marcel (1.0.4)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     mutex_m (0.3.0)
     net-imap (0.5.10)
@@ -152,11 +153,14 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.8-aarch64-linux-gnu)
+    nokogiri (1.18.8)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.18.8-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.18.8-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.8-arm-linux-gnu)
+    nokogiri (1.18.8-arm-linux)
       racc (~> 1.4)
     nokogiri (1.18.8-arm-linux-musl)
       racc (~> 1.4)
@@ -164,7 +168,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.8-x86_64-linux-gnu)
+    nokogiri (1.18.8-x86_64-linux)
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-musl)
       racc (~> 1.4)
@@ -172,12 +176,12 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    polyfill-data (1.0.6)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
     prism (1.5.0)
-    psych (5.2.6)
-      date
+    psych (4.0.6)
       stringio
     racc (1.8.1)
     rack (3.2.1)
@@ -306,6 +310,8 @@ DEPENDENCIES
   erb (< 5.0)
   makandra-rubocop (>= 16.2.0)
   patchy!
+  polyfill-data (~> 1.0)
+  psych (< 5.0)
   rails (~> 7.0)
   rake (>= 13.0)
   rspec (>= 3.9)
@@ -313,4 +319,4 @@ DEPENDENCIES
   zeitwerk (< 2.7)
 
 BUNDLED WITH
-   2.7.2
+   2.6.9

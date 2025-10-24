@@ -3,8 +3,8 @@
 module Patchy
   class Project
     class Config < ::Patchy::Config
-      GemPackConfig = Struct.new(:use_default_packs, :included, :excluded)
-      DirectoryPackConfig = Struct.new(:included, :excluded)
+      GemPackConfig = Data.define(:use_default_packs, :included, :excluded)
+      DirectoryPackConfig = Data.define(:included, :excluded)
 
       def part_path(component_type, part_name)
         part_config('main').dig(component_type.to_s, part_name.to_s)
@@ -13,28 +13,28 @@ module Patchy
       def gem_pack_config
         case component_pack_config
         when nil
-          GemPackConfig.new(true, [], [])
+          GemPackConfig.new(use_default_packs: true, included: [], excluded: [])
         when Array
           included = component_pack_config.select { gem_pack?(_1) }
-          GemPackConfig.new(false, included, [])
+          GemPackConfig.new(use_default_packs: false, included:, excluded: [])
         when Hash
           included = (component_pack_config['include'] || []).select { gem_pack?(_1) }
           excluded = (component_pack_config['exclude'] || []).select { gem_pack?(_1) }
-          GemPackConfig.new(true, included, excluded)
+          GemPackConfig.new(use_default_packs: true, included:, excluded:)
         end
       end
 
       def directory_pack_config
         case component_pack_config
         when nil
-          DirectoryPackConfig.new([], [])
+          DirectoryPackConfig.new(included: [], excluded: [])
         when Array
           included = component_pack_config.select { directory_pack?(_1) }
-          DirectoryPackConfig.new(included, [])
+          DirectoryPackConfig.new(included:, excluded: [])
         when Hash
           included = (component_pack_config['include'] || []).select { directory_pack?(_1) }
           excluded = (component_pack_config['exclude'] || []).select { directory_pack?(_1) }
-          DirectoryPackConfig.new(included, excluded)
+          DirectoryPackConfig.new(included:, excluded:)
         end
       end
 

@@ -6,3 +6,5 @@ gem 'rails', '~> 7.0'
 gem 'sqlite3', '~> 1.4'
 gem 'zeitwerk', '< 2.7'
 gem 'erb', '< 5.0'
+gem 'psych', '< 5.0' # make nokogiri compile
+gem "polyfill-data", "~> 1.0"
