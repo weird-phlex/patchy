@@ -272,9 +272,12 @@ GEM
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     simpleidn (0.2.3)
+    sqlite3 (1.7.3)
+      mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-aarch64-linux)
     sqlite3 (1.7.3-arm-linux)
     sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86-linux)
     sqlite3 (1.7.3-x86_64-darwin)
     sqlite3 (1.7.3-x86_64-linux)
     stringio (3.1.7)
@@ -293,14 +296,13 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  aarch64-linux
   aarch64-linux-musl
-  arm-linux
   arm-linux
   arm-linux-musl
   arm64-darwin
+  ruby
+  x86-linux
   x86_64-darwin
-  x86_64-linux
   x86_64-linux
   x86_64-linux-musl
 
