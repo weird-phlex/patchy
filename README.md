@@ -27,8 +27,7 @@ gem "patchy"
 
 ### Supported Ruby versions
 
-- Ruby (MRI) >= 3.1.0
-- For Ruby < 3.2 you also need the gem `polyfill-data`
+- Ruby (MRI) >= 3.2.0
 
 ## Usage
 
