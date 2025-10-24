@@ -27,7 +27,7 @@ gem "patchy"
 
 ### Supported Ruby versions
 
-- Ruby (MRI) >= 3.1.0
+- Ruby (MRI) >= 3.2.0
 
 ## Usage
 

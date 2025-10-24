@@ -18,6 +18,10 @@ AllCops:
 Gemspec/DevelopmentDependencies:
   Enabled: false
 
+Gemspec/RequiredRubyVersion:
+  Exclude:
+   - 'spec/fixtures/**/*'
+
 # This is a CLI tool.
 # If we ever allow programmatic non-CLI usage of this gem,
 # we need to move all `exit(1)` calls to the CLI layer.

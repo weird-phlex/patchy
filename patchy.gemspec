@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables = ['patchy', 'pj']
 
-  s.required_ruby_version = '>= 3.1'
+  s.required_ruby_version = '>= 3.2'
 
   s.add_dependency 'thor', '~> 1.3'
   s.add_dependency 'activesupport'
