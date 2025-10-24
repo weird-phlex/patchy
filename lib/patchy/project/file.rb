@@ -88,35 +88,13 @@ module Patchy
         end
       end
 
-      private
-
-      def read_beginning
-        bytes = raw_file.read(2_000)
-        if bytes
-          bytes.force_encoding('UTF-8').encode('UTF-8', undef: :replace, invalid: :replace, replace: '?')
-        else
-          ''
-        end
-      end
-
-      def extension
-        raw_file.basename.to_s.delete_prefix('.').match(/(\..*)$/)
-        Regexp.last_match(1) || ''
-      end
-
-      def magic_comments
-        read_beginning.lines.take_while { _1.start_with?(%r{(#|//|<%#|/\*|<!--|-#)}) }
-      end
-
       def patchy_hash
-        return unless magic_comments.any? { _1.match(/patchy: ({.*})/) }
-
-        begin
-          JSON.parse(Regexp.last_match(1))
-        rescue JSON::ParserError
-          @broken_data = Regexp.last_match(1)
-          nil
+        magician = Magician.new(@raw_file)
+        data = magician.read
+        if data.nil?
+          @broken_data = magician.broken_data
         end
+        data
       end
 
       class << self
