@@ -47,7 +47,7 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         rubygems: latest
-        bundler: Gemfile.lock
+        bundler: latest
         bundler-cache: true
     - name: Run RSpec
       run: |
