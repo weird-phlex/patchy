@@ -14,7 +14,7 @@ module Patchy
 
         selected_components = available_components.select do |component|
           glob_patterns.any? do |glob_pattern|
-            (glob_pattern[:pack] == '*' || glob_pattern[:pack] == component.pack.gem) &&
+            (glob_pattern[:pack] == '*' || glob_pattern[:pack] == component.pack.name) &&
               (glob_pattern[:component] == '*' || glob_pattern[:component] == component.name)
           end
         end
