@@ -22,7 +22,7 @@ module Patchy
     end
 
     def magic?
-      raise SpellFizzled, 'No file to examine!' unless magic_path
+      raise SpellFizzled, 'No file to examine!' unless magic_path && magic_path.exist?
 
       self.analysis = FileAnalysis.new(magic_path)
 
@@ -30,7 +30,7 @@ module Patchy
     end
 
     def read!
-      raise SpellFizzled, 'No file to read from!' unless magic_path
+      raise SpellFizzled, 'No file to read from!' unless magic_path && magic_path.exist?
 
       self.analysis = FileAnalysis.new(magic_path)
 
@@ -44,7 +44,7 @@ module Patchy
     end
 
     def clean!
-      raise SpellFizzled, 'No file to clean!' unless magic_path
+      raise SpellFizzled, 'No file to clean!' unless magic_path && magic_path.exist?
       raise SpellFizzled, 'No file to store cleaned output to!' unless regular_path
 
       self.analysis = FileAnalysis.new(magic_path)
@@ -86,7 +86,7 @@ module Patchy
     end
 
     def write(payload)
-      raise SpellFizzled, 'No file to write to!' unless regular_path
+      raise SpellFizzled, 'No file to write to!' unless regular_path && regular_path.exist?
       raise SpellFizzled, 'No file to store written output to!' unless magic_path
       raise SpellFizzled, 'Please provide Payload object!' unless payload.is_a?(Payload)
 

@@ -30,6 +30,12 @@ describe Patchy::Magician do
       end
     end
 
+    context "when `magic_path` is present, but the file doesn't exist" do
+      it 'raises a development error' do
+        expect { subject.magic? }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to examine!')
+      end
+    end
+
     it "returns false if the file in `magic_path` starts with an empty line" do
       magic_path.write(<<~FILE)
 
@@ -136,6 +142,12 @@ describe Patchy::Magician do
     context 'when `magic_path` is absent' do
       let(:magic_path) { nil }
 
+      it 'raises an error' do
+        expect { subject.read! }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to read from!')
+      end
+    end
+
+    context "when `magic_path` is present, but the file doesn't exist" do
       it 'raises an error' do
         expect { subject.read! }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to read from!')
       end
@@ -374,10 +386,18 @@ describe Patchy::Magician do
       end
     end
 
+    context "when `magic_path` is present, but the file doesn't exist" do
+      it 'raises an error' do
+        expect { subject.clean! }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to clean!')
+      end
+    end
+
     context 'when `regular_path` is absent' do
       let(:regular_path) { nil }
 
       it 'raises an error' do
+        magic_path.write('')
+
         expect { subject.clean! }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to store cleaned output to!')
       end
     end
@@ -801,10 +821,18 @@ describe Patchy::Magician do
       end
     end
 
+    context "when `regular_path` is present, but the file doesn't exist" do
+      it 'raises an error' do
+        expect { subject.write({}) }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to write to!')
+      end
+    end
+
     context 'when `magic_path` is absent' do
       let(:magic_path) { nil }
 
       it 'raises an error' do
+        regular_path.write('')
+
         expect { subject.write({}) }.to raise_error(Patchy::Magician::SpellFizzled, 'No file to store written output to!')
       end
     end
