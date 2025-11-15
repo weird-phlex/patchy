@@ -16,7 +16,7 @@ module Patchy
             {
               pack: @source_file.component.pack.name, # short name should be sufficient
               type: @source_file.component.type.to_s, # components | shared | global
-              component: @source_file.component.name, # including outer directories
+              component: @source_file.component.canonical_name_without_type, # including outer directories
               part: @source_file.part, # differentiate between files, if shallow placement is chosen
               file: @source_file.file,
               version: 1, # maybe commit hash instead

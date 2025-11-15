@@ -90,4 +90,22 @@ describe 'integration - add' do
     end
   end
 
+  it 'inserts a magic comment when running patchy add' do
+    with_project('after_pack_setup')
+
+    with_pack('patchy_pack-example') do |pack|
+      pack.with_component('_component_with_inner_subdirectory_', at: 'OUTER')
+    end
+
+    within_project("after_pack_setup") do
+      run('add', '*/*')
+
+      pathname = Pathname.new("app/views/components/ui/OUTER/INNER/_component_with_inner_subdirectory.html.erb")
+      expect(pathname).to exist
+      content = pathname.read
+      expect(content).to include(
+        'patchy: {"pack":"example","type":"components","component":"OUTER/component_with_inner_subdirectory","part":"partial","file":"INNER/_component_with_inner_subdirectory.html.erb","version":1,"mode":"patch","v":1}',
+      )
+    end
+  end
 end
