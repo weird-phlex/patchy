@@ -1,6 +1,11 @@
 module Patchy
   class Magician
     class FileAnalysis
+      Comment = Data.define(:open, :close) do
+        def wrap(string)
+          "#{open} #{string} #{close}".strip
+        end
+      end
 
       attr_reader :file, :file_type
 
@@ -19,48 +24,46 @@ module Patchy
       end
 
       def magic_comment_regex
-        Regexp.new("^\s*#{comment_patterns.map { Regexp.escape(_1) }.join('|')}")
+        Regexp.new("^\s*#{[comment, *additional_comments].map { Regexp.escape(_1.open) }.join('|')}")
       end
 
       def payload_regex
-        Regexp.new("\s*#{Regexp.escape(comment_patterns.first)}\s*patchy:\s*({.*})")
+        Regexp.new("\s*#{Regexp.escape(comment.open)}\s*patchy:\s*({.*})")
       end
 
       def payload_proc
-        custom_payload_proc || ->(data) { "#{comment_patterns.first} patchy: #{data}\n" }
+        ->(data) { comment.wrap("patchy: #{data}").concat("\n") }
       end
 
       private
 
-      def comment_patterns
+      def comment
         case file_type
         when :ruby, :ruby_script, :shell_script, :cucumber, :yaml
-          ['#']
+          Comment.new(open: '#', close: nil)
         when :erb, :thor
-          ['<%-', '<%#']
+          Comment.new(open: '<%-', close: '-%>')
         when :html
-          ['<!--']
+          Comment.new(open: '<!--', close: '-->')
         when :haml
-          ['-#']
+          Comment.new(open: '-#', close: nil)
         when :slim
-          ['/']
+          Comment.new(open: '/', close: nil)
         when :css, :sass
-          ['/*']
+          Comment.new(open: '/*', close: '*/')
         when :js, :ts, :js_script
-          ['//']
+          Comment.new(open: '//', close: nil)
         else
-          ['#']
+          Comment.new(open: '#', close: nil)
         end
       end
 
-      def custom_payload_proc
+      def additional_comments
         case file_type
         when :erb, :thor
-          ->(data) { "<%- patchy: #{data} -%>\n" }
-        when :html
-          ->(data) { "<!-- patchy: #{data} -->\n" }
-        when :css, :sass
-          ->(data) { "/* patchy: #{data} */\n" }
+          [Comment.new(open: '<%#', close: '%>')]
+        else
+          []
         end
       end
 
