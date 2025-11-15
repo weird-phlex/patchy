@@ -49,8 +49,7 @@ module Patchy
 
       self.analysis = FileAnalysis.new(magic_path)
 
-      FileUtils.mkdir_p(regular_path.parent)
-      FileUtils.touch(regular_path)
+      touch!(regular_path)
 
       @skip_shebang = analysis.shebang?
       @end_of_magic_comments_reached = false
@@ -92,8 +91,7 @@ module Patchy
 
       self.analysis = FileAnalysis.new(regular_path)
 
-      FileUtils.mkdir_p(magic_path.parent)
-      FileUtils.touch(magic_path)
+      touch!(magic_path)
 
       input_size = regular_path.size
       if input_size == 0
@@ -156,6 +154,11 @@ module Patchy
       when String
         Pathname.new(path)
       end
+    end
+
+    def touch!(pathname)
+      FileUtils.mkdir_p(pathname.parent)
+      FileUtils.touch(pathname)
     end
 
   end
