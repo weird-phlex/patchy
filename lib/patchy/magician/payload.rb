@@ -14,7 +14,7 @@ module Patchy
         validator = JSONSchemer.schema(json_schema)
         raise PayloadError, 'Payload data schema mismatch' unless validator.valid? data
 
-        new(**data.symbolize_keys.except(:v))
+        new(**data.except(*hardcoded.keys).symbolize_keys)
       end
 
       def self.from_data(data)
@@ -25,7 +25,7 @@ module Patchy
         validator = JSONSchemer.schema(json_schema)
         raise PayloadError, 'Payload data schema mismatch' unless validator.valid? data
 
-        new(**data.symbolize_keys.except(:v))
+        new(**data.except(*hardcoded.keys).symbolize_keys)
       end
 
       def serialize
@@ -75,8 +75,8 @@ module Patchy
             'v' => {
               'type' => 'integer',
               'description' => 'Payload version',
-              'minimum' => 1,
-              'maximum' => 1,
+              'minimum' => hardcoded['v'],
+              'maximum' => hardcoded['v'],
             },
           },
         }
