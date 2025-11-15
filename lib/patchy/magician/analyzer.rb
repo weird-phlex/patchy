@@ -39,6 +39,8 @@ module Patchy
           ['<!--']
         when :haml
           ['-#']
+        when :slim
+          ['/']
         when :css, :sass
           ['/*']
         when :js, :ts, :js_script
@@ -71,6 +73,8 @@ module Patchy
           :erb
         when /\.haml$/
           :haml
+        when /\.slim$/
+          :slim
         when /\.css$/
           :css
         when /\.scss$/, /\.sass$/
@@ -81,7 +85,7 @@ module Patchy
           detect_script_type(file) || :js
         when /\.ts$/, /\.tsx/
           detect_script_type(file) || :ts
-        when /\.yml$/
+        when /\.yml$/, /\.yaml$/
           :yaml
         when /\.sh$/, ''
           detect_script_type(file) || raise("Unsupported file type: #{extension(file)}")
