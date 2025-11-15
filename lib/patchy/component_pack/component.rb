@@ -3,7 +3,7 @@
 module Patchy
   class ComponentPack
     class Component
-      attr_reader :component_path, :relative_path, :type, :subdirectory, :pack, :name
+      attr_reader :component_path, :relative_path, :type, :subdirectory, :pack, :name, :canonical_name_without_type
 
       def initialize(name, type:, pack:, subdirectory: [])
         @pack = pack
@@ -23,6 +23,9 @@ module Patchy
         name_parts << "_#{last}_"
         @relative_path = name_parts.join('/')
         @component_path = @pack.pack_path.join(*name_parts)
+
+        _type, *rest = @canonical_name.split('/')
+        @canonical_name_without_type = rest.join('/')
       end
 
       def inspect

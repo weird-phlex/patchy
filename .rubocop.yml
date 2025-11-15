@@ -32,3 +32,6 @@ Rails/Exit:
 Naming/FileName:
   Exclude:
     - '**/lib/*.rb'
+
+Style/NegatedIf:
+  Enabled: false
