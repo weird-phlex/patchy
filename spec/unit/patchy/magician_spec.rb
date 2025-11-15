@@ -185,172 +185,84 @@ describe Patchy::Magician do
       expect { subject.read! }.to_not change { magic_path.read }
     end
 
-    context 'for .rb files' do
-      let(:regular_path) { @tmp_dir.join('regular.rb') }
-      let(:magic_path) { @tmp_dir.join('magic.rb') }
+    it_behaves_like 'a reading magician', file_extension: '.rb', considers_shebang: true do
+      let(:file_with_payload) { <<~FILE }
+        #! /usr/bin/env ruby
+        # frozen_string_literal: true
+        # locals: (message:)
+        # patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          # frozen_string_literal: true
-          # locals: (message:)
-          # patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          // patchy: #{valid_magic_comment}
-          # patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
-
-      describe 'with a JS shebang' do
-        it 'returns the payload of the magic comment of the file in `magic_path`' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            // webpackChunkName: "main"
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          expect(subject.read!).to eq(valid_payload)
-        end
-
-        it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            # patchy: #{valid_magic_comment}
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          expect(subject.read!).to eq(nil)
-        end
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        #! /usr/bin/env ruby
+        // patchy: #{valid_magic_comment}
+        # patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .erb files' do
-      let(:regular_path) { @tmp_dir.join('regular.erb') }
-      let(:magic_path) { @tmp_dir.join('magic.erb') }
+    it_behaves_like 'a reading magician', file_extension: '.erb' do
+      let(:file_with_payload) { <<~FILE }
+        <%# frozen_string_literal: true
+        <%- locals: (message:)
+        <%- patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          <%# frozen_string_literal: true
-          <%- locals: (message:)
-          <%- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <%- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        <%- patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .html files' do
-      let(:regular_path) { @tmp_dir.join('regular.html') }
-      let(:magic_path) { @tmp_dir.join('magic.html') }
+    it_behaves_like 'a reading magician', file_extension: '.html' do
+      let(:file_with_payload) { <<~FILE }
+        <!-- frozen_string_literal: true
+        <!-- locals: (message:)
+        <!-- patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          <!-- frozen_string_literal: true
-          <!-- locals: (message:)
-          <!-- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <!-- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        <!-- patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .haml files' do
-      let(:regular_path) { @tmp_dir.join('regular.haml') }
-      let(:magic_path) { @tmp_dir.join('magic.haml') }
+    it_behaves_like 'a reading magician', file_extension: '.haml' do
+      let(:file_with_payload) { <<~FILE }
+        -# frozen_string_literal: true
+        -# locals: (message:)
+        -# patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          -# frozen_string_literal: true
-          -# locals: (message:)
-          -# patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          <!-- patchy: #{valid_magic_comment}
-          -# patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        <!-- patchy: #{valid_magic_comment}
+        -# patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .css files' do
-      let(:regular_path) { @tmp_dir.join('regular.css') }
-      let(:magic_path) { @tmp_dir.join('magic.css') }
+    it_behaves_like 'a reading magician', file_extension: '.css' do
+      let(:file_with_payload) { <<~FILE }
+        /* frozen_string_literal: true
+        /* locals: (message:)
+        /* patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          /* frozen_string_literal: true
-          /* locals: (message:)
-          /* patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          // patchy: #{valid_magic_comment}
-          /* patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        // patchy: #{valid_magic_comment}
+        /* patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .js files' do
-      let(:regular_path) { @tmp_dir.join('regular.js') }
-      let(:magic_path) { @tmp_dir.join('magic.js') }
+    it_behaves_like 'a reading magician', file_extension: '.js', considers_shebang: true do
+      let(:file_with_payload) { <<~FILE }
+        // frozen_string_literal: true
+        // locals: (message:)
+        // patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          // frozen_string_literal: true
-          // locals: (message:)
-          // patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(valid_payload)
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          // patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.read!).to eq(nil)
-      end
+      let(:file_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        // patchy: #{valid_magic_comment}
+      FILE
     end
   end
 
@@ -434,358 +346,115 @@ describe Patchy::Magician do
       expect { subject.clean! }.to raise_error(Patchy::Magician::PayloadError)
     end
 
-    context 'for .rb files' do
-      let(:regular_path) { @tmp_dir.join('regular.rb') }
-      let(:magic_path) { @tmp_dir.join('magic.rb') }
+    it_behaves_like 'a cleaning magician', file_extension: '.rb', considers_shebang: true do
+      let(:before_clean) { <<~FILE }
+        #! /usr/bin/env ruby
+        # frozen_string_literal: true
+        # locals: (message:)
+        # patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          # frozen_string_literal: true
-          # locals: (message:)
-          # patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        #! /usr/bin/env ruby
+        # frozen_string_literal: true
+        # locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          # frozen_string_literal: true
-          # locals: (message:)
-          # patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          #! /usr/bin/env ruby
-          # frozen_string_literal: true
-          # locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          // patchy: #{valid_magic_comment}
-          # patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          #! /usr/bin/env ruby
-          // patchy: #{valid_magic_comment}
-          # patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
-
-      describe 'with a JS shebang' do
-        it 'returns the payload of the magic comment of the file in `magic_path`' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            // webpackChunkName: "main"
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          expect(subject.clean!).to eq(valid_payload)
-        end
-
-        it 'puts the file with the magic comment removed into `regular_path`' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            // webpackChunkName: "main"
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          subject.clean!
-
-          expect(regular_path.read).to eq(<<~FILE)
-            #! /usr/bin/env node
-            // webpackChunkName: "main"
-          FILE
-        end
-
-        it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            # patchy: #{valid_magic_comment}
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          expect(subject.clean!).to eq(nil)
-        end
-
-        it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-          magic_path.write(<<~FILE)
-            #! /usr/bin/env node
-            # patchy: #{valid_magic_comment}
-            // patchy: #{valid_magic_comment}
-          FILE
-
-          subject.clean!
-
-          expect(regular_path.read).to eq(magic_path.read)
-        end
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        #! /usr/bin/env ruby
+        // patchy: #{valid_magic_comment}
+        # patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .erb files' do
-      let(:regular_path) { @tmp_dir.join('regular.erb') }
-      let(:magic_path) { @tmp_dir.join('magic.erb') }
+    it_behaves_like 'a cleaning magician', file_extension: '.erb' do
+      let(:before_clean) { <<~FILE }
+        <%# frozen_string_literal: true
+        <%- locals: (message:)
+        <%- patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          <%# frozen_string_literal: true
-          <%- locals: (message:)
-          <%- patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        <%# frozen_string_literal: true
+        <%- locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          <%# frozen_string_literal: true
-          <%- locals: (message:)
-          <%- patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          <%# frozen_string_literal: true
-          <%- locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <%- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <%- patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        <%- patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .html files' do
-      let(:regular_path) { @tmp_dir.join('regular.html') }
-      let(:magic_path) { @tmp_dir.join('magic.html') }
+    it_behaves_like 'a cleaning magician', file_extension: '.html' do
+      let(:before_clean) { <<~FILE }
+        <!-- frozen_string_literal: true
+        <!-- locals: (message:)
+        <!-- patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          <!-- frozen_string_literal: true
-          <!-- locals: (message:)
-          <!-- patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        <!-- frozen_string_literal: true
+        <!-- locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          <!-- frozen_string_literal: true
-          <!-- locals: (message:)
-          <!-- patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          <!-- frozen_string_literal: true
-          <!-- locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <!-- patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          <!-- patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        <!-- patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .haml files' do
-      let(:regular_path) { @tmp_dir.join('regular.haml') }
-      let(:magic_path) { @tmp_dir.join('magic.haml') }
+    it_behaves_like 'a cleaning magician', file_extension: '.haml' do
+      let(:before_clean) { <<~FILE }
+        -# frozen_string_literal: true
+        -# locals: (message:)
+        -# patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          -# frozen_string_literal: true
-          -# locals: (message:)
-          -# patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        -# frozen_string_literal: true
+        -# locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          -# frozen_string_literal: true
-          -# locals: (message:)
-          -# patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          -# frozen_string_literal: true
-          -# locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          <!-- patchy: #{valid_magic_comment}
-          -# patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          <!-- patchy: #{valid_magic_comment}
-          -# patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        <!-- patchy: #{valid_magic_comment}
+        -# patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .css files' do
-      let(:regular_path) { @tmp_dir.join('regular.css') }
-      let(:magic_path) { @tmp_dir.join('magic.css') }
+    it_behaves_like 'a cleaning magician', file_extension: '.css' do
+      let(:before_clean) { <<~FILE }
+        /* frozen_string_literal: true
+        /* locals: (message:)
+        /* patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          /* frozen_string_literal: true
-          /* locals: (message:)
-          /* patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        /* frozen_string_literal: true
+        /* locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          /* frozen_string_literal: true
-          /* locals: (message:)
-          /* patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          /* frozen_string_literal: true
-          /* locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          // patchy: #{valid_magic_comment}
-          /* patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          // patchy: #{valid_magic_comment}
-          /* patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        // patchy: #{valid_magic_comment}
+        /* patchy: #{valid_magic_comment}
+      FILE
     end
 
-    context 'for .js files' do
-      let(:regular_path) { @tmp_dir.join('regular.js') }
-      let(:magic_path) { @tmp_dir.join('magic.js') }
+    it_behaves_like 'a cleaning magician', file_extension: '.js', considers_shebang: true do
+      let(:before_clean) { <<~FILE }
+        // frozen_string_literal: true
+        // locals: (message:)
+        // patchy: #{valid_magic_comment}
+      FILE
 
-      it 'returns the payload of the magic comment of the file in `magic_path`' do
-        magic_path.write(<<~FILE)
-          // frozen_string_literal: true
-          // locals: (message:)
-          // patchy: #{valid_magic_comment}
-        FILE
+      let(:after_clean) { <<~FILE }
+        // frozen_string_literal: true
+        // locals: (message:)
+      FILE
 
-        expect(subject.clean!).to eq(valid_payload)
-      end
-
-      it 'puts the file with the magic comment removed into `regular_path`' do
-        magic_path.write(<<~FILE)
-          // frozen_string_literal: true
-          // locals: (message:)
-          // patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(<<~FILE)
-          // frozen_string_literal: true
-          // locals: (message:)
-        FILE
-      end
-
-      it 'returns `nil` when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          // patchy: #{valid_magic_comment}
-        FILE
-
-        expect(subject.clean!).to eq(nil)
-      end
-
-      it 'leaves the file unchanged when a comment of a different language occurs before out magic comment' do
-        magic_path.write(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          // patchy: #{valid_magic_comment}
-        FILE
-
-        subject.clean!
-
-        expect(regular_path.read).to eq(magic_path.read)
-      end
+      let(:before_clean_with_comment_from_other_language) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        // patchy: #{valid_magic_comment}
+      FILE
     end
   end
 
@@ -861,139 +530,47 @@ describe Patchy::Magician do
       expect(regular_path.read).to eq(old_content)
     end
 
-    context 'for .rb files' do
-      let(:regular_path) { @tmp_dir.join('regular.rb') }
-      let(:magic_path) { @tmp_dir.join('magic.rb') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          # patchy: #{valid_magic_comment}
-          CONTENT
-        FILE
-      end
-
-      describe 'with a Ruby shebang' do
-        it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-          regular_path.write(<<~FILE)
-            #! /usr/bin/env ruby
-            CONTENT
-          FILE
-
-          subject.write(valid_payload)
-          expect(magic_path.read).to eq(<<~FILE)
-            #! /usr/bin/env ruby
-            # patchy: #{valid_magic_comment}
-            CONTENT
-          FILE
-        end
-      end
-
-      describe 'with a JS shebang' do
-        it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-          regular_path.write(<<~FILE)
-            #! /usr/bin/env node
-            CONTENT
-          FILE
-
-          subject.write(valid_payload)
-          expect(magic_path.read).to eq(<<~FILE)
-            #! /usr/bin/env node
-            // patchy: #{valid_magic_comment}
-            CONTENT
-          FILE
-        end
-      end
+    it_behaves_like 'a writing magician', file_extension: '.rb', considers_shebang: true do
+      let(:after_write) { <<~FILE }
+        # patchy: #{valid_magic_comment}
+        CONTENT
+      FILE
     end
 
-    context 'for .erb files' do
-      let(:regular_path) { @tmp_dir.join('regular.erb') }
-      let(:magic_path) { @tmp_dir.join('magic.erb') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          <%- patchy: #{valid_magic_comment} -%>
-          CONTENT
-        FILE
-      end
+    it_behaves_like 'a writing magician', file_extension: '.erb' do
+      let(:after_write) { <<~FILE }
+        <%- patchy: #{valid_magic_comment} -%>
+        CONTENT
+      FILE
     end
 
-    context 'for .html files' do
-      let(:regular_path) { @tmp_dir.join('regular.html') }
-      let(:magic_path) { @tmp_dir.join('magic.html') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          <!-- patchy: #{valid_magic_comment} -->
-          CONTENT
-        FILE
-      end
+    it_behaves_like 'a writing magician', file_extension: '.html' do
+      let(:after_write) { <<~FILE }
+        <!-- patchy: #{valid_magic_comment} -->
+        CONTENT
+      FILE
     end
 
-    context 'for .haml files' do
-      let(:regular_path) { @tmp_dir.join('regular.haml') }
-      let(:magic_path) { @tmp_dir.join('magic.haml') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          -# patchy: #{valid_magic_comment}
-          CONTENT
-        FILE
-      end
+    it_behaves_like 'a writing magician', file_extension: '.haml' do
+      let(:after_write) { <<~FILE }
+        -# patchy: #{valid_magic_comment}
+        CONTENT
+      FILE
     end
 
-    context 'for .css files' do
-      let(:regular_path) { @tmp_dir.join('regular.css') }
-      let(:magic_path) { @tmp_dir.join('magic.css') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          /* patchy: #{valid_magic_comment} */
-          CONTENT
-        FILE
-      end
+    it_behaves_like 'a writing magician', file_extension: '.css' do
+      let(:after_write) { <<~FILE }
+        /* patchy: #{valid_magic_comment} */
+        CONTENT
+      FILE
     end
 
-    context 'for .js files' do
-      let(:regular_path) { @tmp_dir.join('regular.js') }
-      let(:magic_path) { @tmp_dir.join('magic.js') }
-
-      it 'adds the given payload as a magic comment with the correct syntax as the first magic comment after a potential shebang line' do
-        regular_path.write(<<~FILE)
-          CONTENT
-        FILE
-
-        subject.write(valid_payload)
-        expect(magic_path.read).to eq(<<~FILE)
-          // patchy: #{valid_magic_comment}
-          CONTENT
-        FILE
-      end
+    it_behaves_like 'a writing magician', file_extension: '.js', considers_shebang: true do
+      let(:after_write) { <<~FILE }
+        // patchy: #{valid_magic_comment}
+        CONTENT
+      FILE
     end
-
   end
+
 end
